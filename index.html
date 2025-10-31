@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Segwik – Schedule Child Meeting (On‑Brand Modal)</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#ffffff; --ink:#243048; --muted:#667085; --line:#e6ebf2; --accent:#0F2D56; --ok:#0b62ff;
+    --chip:#f4f7fb; --chip-line:#e7edf5; --pill:#eaf1ff; --pill-ink:#356aff;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:'Segoe UI',system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 0 rgba(16,24,40,.02)}
+
+  /* Header */
+  .header{display:flex;align-items:center;gap:12px;padding:8px 8px}
+  .header .spacer{flex:1}
+  .back{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;color:#0b172a;cursor:pointer}
+  .save{background:#eaf1ff;color:#356aff;border:1px solid #cfe0ff;padding:10px 16px;border-radius:10px;font-weight:600;cursor:pointer}
+  .save:active{transform:translateY(1px)}
+
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(15,23,42,.35);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+  .modal.open{display:flex}
+  .dialog {
+  width:min(980px,98vw);
+  max-height:90vh;          /* limits popup height */
+  overflow:hidden;          /* hides outer overflow */
+  background:#fff;
+  border-radius:14px;
+  border:1px solid #e7edf5;
+  box-shadow:0 12px 50px rgba(0,0,0,.15);
+  display:flex;
+  flex-direction:column;
+}
+
+.panel {
+  padding:16px;
+  flex:1;                   /* fills the vertical space */
+  overflow-y:auto;          /* enables inner scrollbar */
+}
+
+  .dialog-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .dialog-head h3{margin:0;font-size:18px}
+  .created-pill{margin-left:auto;background:var(--pill);color:var(--pill-ink);border:1px solid #cfe0ff;padding:6px 10px;border-radius:999px;font-size:12px}
+
+  /* Content */
+
+
+  .grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px}
+  .grid2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .field{display:flex;flex-direction:column;gap:8px}
+  label{font-size:14px;color:#1f2a44;font-weight:600}
+  .hint{font-size:12px;color:var(--muted)}
+  .input, select, input[type="datetime-local"]{width:100%;height:46px;border:1px solid #e7edf5;border-radius:8px;padding:0 12px;font-size:15px;color:#0f1f3a;background:#fff;outline:none}
+  .input::placeholder{color:#97a3b6}
+  select{appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');background-repeat:no-repeat;background-position:right 12px center;background-size:18px}
+
+  /* Status chips */
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:var(--chip);border:1px solid var(--chip-line);border-radius:999px;padding:8px 10px;font-size:12px;cursor:pointer}
+  .chip[data-active="true"]{background:#eaf1ff;border-color:#cfe0ff;color:#356aff}
+
+  /* People tabs (Invitees / Staff) */
+  .subtabs{display:flex;gap:8px;border-bottom:1px solid var(--line);padding:6px 8px;margin-top:6px}
+  .subtab{padding:8px 10px;border:1px solid var(--line);border-bottom:none;border-radius:8px 8px 0 0;background:#fff;cursor:pointer}
+  .subtab[aria-selected="true"]{background:#f8fafc}
+  .subpanel{padding:12px;display:none}
+  .subpanel.active{display:block}
+  .list{display:flex;flex-direction:column;gap:8px}
+  .list-item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}
+
+  /* Availability (inside Staff tab) */
+  .avail{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}
+  .avail-head{display:flex;align-items:center;justify-content:space-between}
+  .avail-days{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:12px}
+  .day{border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;background:#fff}
+  .day h4{margin:0;font-size:12px;color:var(--muted)}
+  .slot{display:block;width:100%;background:#f8fafc;border:1px solid #e7edf5;padding:8px;text-align:center;border-radius:8px;cursor:pointer;font-size:12px}
+  .slot[disabled]{opacity:.45;cursor:not-allowed}
+  .slot.active{outline:2px solid var(--accent)}
+
+  /* Footer actions */
+  .actions{display:flex;justify-content:flex-end;gap:10px;padding:12px;border-top:1px solid var(--line)}
+  .btn{padding:10px 14px;border-radius:10px;border:1px solid #d0d7e2;background:#fff;cursor:pointer;font-weight:700}
+  .btn.primary{background:var(--ok);border-color:var(--ok);color:#fff}
+  .btn.ghost{background:#f4f7fb}
+
+  @media (max-width:940px){.grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.avail-days{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="back" title="Back" aria-label="Back">&#8592;</div>
+      <div class="spacer"></div>
+      <button class="save" id="openModal">+ Schedule Meeting</button>
+    </div>
+
+    <!-- On‑brand modal -->
+    <div class="modal" id="modal">
+      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+        <div class="dialog-head">
+          <h3 id="dlgTitle">Schedule Child Meeting</h3>
+          <span class="created-pill" id="createdByPill">Created by: <strong id="createdByName">Alex Johnson</strong></span>
+        </div>
+
+        <div class="panel">
+          <!-- Row 1: Meeting name + Status + Stage -->
+          <div class="grid3">
+            <div class="field">
+              <label for="meetingName">Meeting name</label>
+              <input class="input" id="meetingName" />
+            </div>
+            <div class="field">
+              <label>Meeting status</label>
+              <div class="chips" role="group" aria-label="Meeting status">
+                <button class="chip" data-group="status" data-value="Draft">Draft</button>
+                <button class="chip" data-group="status" data-value="Active" data-active="true">Active</button>
+              </div>
+              <div class="hint">Active is the default.</div>
+            </div>
+            <div class="field">
+              <label for="meetingStage">Meeting stage</label>
+              <select id="meetingStage">
+                <option>Scheduled</option>
+                <option>Confirmed</option>
+                <option>Cancelled</option>
+                <option>Rescheduled</option>
+                <option>Updated</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: Start / End + Timezone (no duration) -->
+          <div class="grid2" style="margin-top:12px">
+            <div class="field">
+              <label for="startDT">Start / End</label>
+              <div class="row">
+                <input type="datetime-local" id="startDT" />
+                <input type="datetime-local" id="endDT" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="timezone">Timezone</label>
+              <select id="timezone">
+                <option value="America/New_York" selected>America/New_York (EDT/EST)</option>
+                <option value="America/Chicago">America/Chicago</option>
+                <option value="America/Denver">America/Denver</option>
+                <option value="America/Los_Angeles">America/Los_Angeles</option>
+                <option value="UTC">UTC</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 3: Subtabs Invitees | Staff -->
+          <div class="subtabs" role="tablist" aria-label="Participant setup" style="margin-top:16px">
+            <button class="subtab" id="tabInvitees" aria-selected="true" aria-controls="panelInvitees">Invitees</button>
+            <button class="subtab" id="tabStaff" aria-selected="false" aria-controls="panelStaff">Staff</button>
+          </div>
+
+          <!-- Invitees Panel -->
+          <div id="panelInvitees" class="subpanel active" role="tabpanel" aria-labelledby="tabInvitees">
+            <div class="grid2">
+              <div class="field">
+                <label for="customerPicker">Customer</label>
+                <div class="row">
+                  <select id="customerPicker" style="flex:2"></select>
+                  <select id="inviteeRole" style="flex:1"></select>
+                  <button class="btn" id="addInviteeBtn" style="flex:0 0 auto">Add</button>
+                </div>
+                <div class="hint"><a href="#" id="addContactLink" style="color:#356aff;text-decoration:underline">+Add Contact</a> (placeholder)</div>
+              </div>
+              <div class="field">
+                <label>Suggested contacts</label>
+                <div class="list" id="suggestedContacts"></div>
+              </div>
+            </div>
+            <div style="height:8px"></div>
+            <label>Invitee list</label>
+            <div class="list" id="inviteeList"></div>
+          </div>
+
+          <!-- Staff Panel -->
+          <div id="panelStaff" class="subpanel" role="tabpanel" aria-labelledby="tabStaff">
+            <div class="field">
+              <label for="attendingStaff">Attending Staff (internal users)</label>
+              <div class="row">
+                <select id="attendingStaff" style="flex:2"></select>
+                <select id="staffRole" style="flex:1"></select>
+              </div>
+              <div class="hint">Choose attending staff and role. Availability appears below once selected.</div>
+            </div>
+
+            <div class="list" id="staffList" style="margin-top:8px"></div>
+
+            <!-- Availability lives here and appears when staff selected -->
+            <div class="avail" id="staffAvailability" style="display:none">
+              <div class="avail-head">
+                <div>
+                  <strong>Suggested available times</strong>
+                  <div class="hint" id="availabilityHint">Select an Attending Staff to view their next 7 days of availability.</div>
+                </div>
+                <div class="row">
+                  <button class="chip" id="prevWeek" title="Previous 7 days">◀</button>
+                  <button class="chip" id="nextWeek" title="Next 7 days">▶</button>
+                </div>
+              </div>
+              <div class="avail-days" id="daysContainer"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn ghost" id="closeModal">Cancel</button>
+          <button class="btn" id="saveDraftBtn">Save as Draft</button>
+          <button class="btn primary" id="scheduleBtn">Schedule Meeting</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // ===== Dummy Data =====
+  const loggedInUser = { id: 'u-100', name: 'Alex Johnson', email: 'alex@segwik.example' };
+  const meetingRoles = ['attendee','guest','special guest','host','sponsor','client','colleague','member','potential ambassador','invitee','board member'];
+  const internalUsers = [
+    { id:'u-101', name:'Priya Patel', title:'Account Executive', tz:'America/New_York',
+      busy:[ { start: off(0,13,0), end: off(0,14,0) }, { start: off(1,10,30), end: off(1,11,30) }, { start: off(3,15,0), end: off(3,16,0) } ],
+      working:{ startHour:9, endHour:17 }
+    },
+    { id:'u-102', name:'Miguel Santos', title:'Solutions Consultant', tz:'America/New_York',
+      busy:[ { start: off(0,9,0), end: off(0,9,30) }, { start: off(2,13,30), end: off(2,15,0) } ],
+      working:{ startHour:8, endHour:16 }
+    },
+    { id:'u-103', name:'Jade Williams', title:'CSM', tz:'America/New_York', busy:[ { start: off(4,11,0), end: off(4,12,0) } ], working:{ startHour:10, endHour:18 } },
+  ];
+  const customers = [
+    { id:'c-201', name:'Acme Corp – Dana Scott', email:'dana@acme.example' },
+    { id:'c-202', name:'Rivertown Realty – Chris Lee', email:'chris@rivertown.example' },
+    { id:'c-203', name:'Blue Harbor Dental – Dr. N. Patel', email:'np@bh-dental.example' },
+    { id:'c-204', name:'Fresh Start Advancement – Anthony Rosa', email:'anthony@fsa.example' },
+  ];
+  const suggested = [
+    { id:'c-205', name:'Garden State Roofing – Alicia Kim', email:'alicia@gstate.example' },
+    { id:'c-206', name:'Oceanview Fitness – Mark Chen', email:'mark@ovfit.example' },
+    { id:'c-207', name:'North Ridge Pediatrics – Dr. Lee', email:'lee@nrpeds.example' },
+  ];
+
+  // ===== State =====
+  const state = { status:'Active', stage:'Scheduled', timezone:'America/New_York', staff:null, weekOffset:0, invitees:[], staffOnMeeting:[] };
+  const defaultSlotMinutes = 30; // used for suggested times only (UI hides duration)
+
+  // ===== Utilities =====
+  function pad(n){return String(n).padStart(2,'0')} 
+  function toISO(d){const y=d.getFullYear(),m=pad(d.getMonth()+1),dy=pad(d.getDate()),hh=pad(d.getHours()),mm=pad(d.getMinutes());return `${y}-${m}-${dy}T${hh}:${mm}`}
+  function parseISO(v){const [date,time]=v.split('T');const [y,m,dy]=date.split('-').map(Number);const [hh,mm]=time.split(':').map(Number);return new Date(y,m-1,dy,hh,mm)}
+  function off(days,h=9,m=0){const d=new Date();d.setDate(d.getDate()+days);d.setHours(h,m,0,0);return d.toISOString()}
+  function overlaps(aS,aE,bS,bE){return aS<bE && bS<aE}
+  function startOfDayOffset(days){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+days);return d}
+  function fmtDay(d){return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})}
+  function fmtTime(d){return d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}
+  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+
+  // ===== DOM =====
+  const modal = document.getElementById('modal');
+  document.getElementById('openModal').addEventListener('click',()=>{modal.classList.add('open')});
+  document.getElementById('closeModal').addEventListener('click',()=>{modal.classList.remove('open')});
+  modal.addEventListener('click',(e)=>{if(e.target===modal) modal.classList.remove('open')});
+
+  const createdByName = document.getElementById('createdByName');
+  const meetingStage = document.getElementById('meetingStage');
+  const timezoneSel = document.getElementById('timezone');
+  const startDT = document.getElementById('startDT');
+  const endDT = document.getElementById('endDT');
+
+  // subtabs
+  const tabInvitees = document.getElementById('tabInvitees');
+  const tabStaff = document.getElementById('tabStaff');
+  const panelInvitees = document.getElementById('panelInvitees');
+  const panelStaff = document.getElementById('panelStaff');
+
+  // invitees
+  const customerPicker = document.getElementById('customerPicker');
+  const inviteeRole = document.getElementById('inviteeRole');
+  const addInviteeBtn = document.getElementById('addInviteeBtn');
+  const suggestedContacts = document.getElementById('suggestedContacts');
+  const inviteeList = document.getElementById('inviteeList');
+
+  // staff
+  const attendingStaff = document.getElementById('attendingStaff');
+  const staffRole = document.getElementById('staffRole');
+  const staffList = document.getElementById('staffList');
+  const staffAvailability = document.getElementById('staffAvailability');
+  const daysContainer = document.getElementById('daysContainer');
+  const availabilityHint = document.getElementById('availabilityHint');
+  const prevWeek = document.getElementById('prevWeek');
+  const nextWeek = document.getElementById('nextWeek');
+
+  const statusChips = Array.from(document.querySelectorAll('.chip[data-group="status"]'));
+
+  // ===== Init =====
+  function init(){
+    createdByName.textContent = loggedInUser.name;
+    meetingStage.value = state.stage; timezoneSel.value = state.timezone;
+
+    // roles
+    staffRole.innerHTML = meetingRoles.map(r=>`<option>${cap(r)}</option>`).join('');
+    staffRole.value = 'Host';
+    inviteeRole.innerHTML = meetingRoles.map(r=>`<option>${cap(r)}</option>`).join('');
+    inviteeRole.value = 'Client';
+
+    // pickers
+    attendingStaff.innerHTML = `<option value="">— Select staff —</option>` + internalUsers.map(u=>`<option value="${u.id}">${u.name} · ${u.title}</option>`).join('');
+    customerPicker.innerHTML = `<option value="">— Select contact —</option>` + customers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+
+    // suggested
+    suggested.forEach(c=>{
+      const el = document.createElement('div'); el.className='list-item';
+      el.innerHTML = `<div>${c.name}<div class="hint">${c.email}</div></div><button class="btn" data-add-contact="${c.id}">Add</button>`;
+      suggestedContacts.appendChild(el);
+    });
+
+    // default datetimes (next sensible time)
+    const now=new Date(); now.setMinutes(now.getMinutes()<30?30:0,0,0); if(now.getMinutes()===0) now.setHours(now.getHours()+1);
+    startDT.value = toISO(now);
+    endDT.value = toISO(new Date(now.getTime()+defaultSlotMinutes*60*1000));
+
+    // handlers
+    statusChips.forEach(ch=> ch.addEventListener('click', onStatusClick));
+
+    tabInvitees.addEventListener('click', ()=> switchSub('invitees'));
+    tabStaff.addEventListener('click', ()=> switchSub('staff'));
+
+    // Invitees: selection does NOT auto-add; use button
+    addInviteeBtn.addEventListener('click', ()=>{
+      const id = customerPicker.value; if(!id) return;
+      const c = [...customers, ...suggested].find(x=>x.id===id);
+      addInvitee(c, inviteeRole.value);
+      customerPicker.value='';
+    });
+    suggestedContacts.addEventListener('click', (e)=>{
+      const id = e.target?.getAttribute?.('data-add-contact'); if(!id) return; const c=suggested.find(x=>x.id===id); addInvitee(c, inviteeRole.value);
+    });
+
+    attendingStaff.addEventListener('change', onStaffChange);
+    prevWeek.addEventListener('click', ()=>{ state.weekOffset=Math.max(0, state.weekOffset-1); renderAvailability(); });
+    nextWeek.addEventListener('click', ()=>{ state.weekOffset+=1; renderAvailability(); });
+
+    document.getElementById('scheduleBtn').addEventListener('click', ()=> alert('Scheduled! (mock)'));
+    document.getElementById('saveDraftBtn').addEventListener('click', ()=> alert('Saved draft. (mock)'));
+    document.getElementById('closeModal').addEventListener('click', ()=> modal.classList.remove('open'));
+
+    renderInviteeList(); renderStaffList();
+  }
+
+  function onStatusClick(e){ statusChips.forEach(c=> c.removeAttribute('data-active')); e.currentTarget.setAttribute('data-active','true'); state.status=e.currentTarget.dataset.value; }
+
+  function switchSub(which){ const inv=which==='invitees'; tabInvitees.setAttribute('aria-selected',inv); tabStaff.setAttribute('aria-selected',!inv); panelInvitees.classList.toggle('active',inv); panelStaff.classList.toggle('active',!inv); }
+
+  // Staff picker -> show availability
+  function onStaffChange(){
+    const id = attendingStaff.value || null; state.staff = id;
+    if(id && !state.staffOnMeeting.some(s=>s.id===id)){
+      state.staffOnMeeting.push({ id, role: staffRole.value });
+      renderStaffList();
+    }
+    // toggle availability section
+    staffAvailability.style.display = id ? 'block' : 'none';
+    renderAvailability();
+  }
+
+  // Availability (uses defaultSlotMinutes to build slots)
+  function renderAvailability(){
+    daysContainer.innerHTML='';
+    if(!state.staff){
+      availabilityHint.textContent = 'Select an Attending Staff to view their next 7 days of availability.';
+      for(let i=0;i<7;i++){
+        const d=startOfDayOffset(i+state.weekOffset*7);
+        const el=document.createElement('div'); el.className='day';
+        el.innerHTML=`<h4>${fmtDay(d)}</h4><button class="slot" disabled>No staff selected</button>`;
+        daysContainer.appendChild(el);
+      }
+      return;
+    }
+    const user = internalUsers.find(u=>u.id===state.staff);
+    availabilityHint.textContent = `Showing ${user.name}'s availability (next 7 days)`;
+    for(let i=0;i<7;i++){
+      const d = startOfDayOffset(i+state.weekOffset*7);
+      const slots = buildSlotsForDay(user, d, defaultSlotMinutes).slice(0,6);
+      const el=document.createElement('div'); el.className='day';
+      const title=document.createElement('h4'); title.textContent=fmtDay(d); el.appendChild(title);
+      if(!slots.length){
+        const b=document.createElement('button'); b.className='slot'; b.disabled=true; b.textContent='No open slots'; el.appendChild(b);
+      } else {
+        slots.forEach(s=>{
+          const b=document.createElement('button'); b.className='slot'; b.textContent=`${fmtTime(s.start)} – ${fmtTime(s.end)}`;
+          b.addEventListener('click',()=>{
+            startDT.value = toISO(s.start);
+            endDT.value = toISO(s.end);
+            document.querySelectorAll('.slot').forEach(x=>x.classList.remove('active'));
+            b.classList.add('active');
+          });
+          el.appendChild(b);
+        });
+      }
+      daysContainer.appendChild(el);
+    }
+  }
+
+  function buildSlotsForDay(user,date,minutes){
+    const slots=[]; const dayStart=new Date(date); dayStart.setHours(user.working.startHour,0,0,0); const dayEnd=new Date(date); dayEnd.setHours(user.working.endHour,0,0,0);
+    const busy = user.busy.map(b=>({start:new Date(b.start), end:new Date(b.end)})).filter(b=> b.start.toDateString()===date.toDateString());
+    for(let t=new Date(dayStart); t<dayEnd; t=new Date(t.getTime()+15*60*1000)){
+      const end=new Date(t.getTime()+minutes*60*1000); if(end>dayEnd) break; const clash = busy.some(b=> overlaps(t,end,b.start,b.end)); if(!clash){ slots.push({start:new Date(t), end}); }
+    }
+    return slots;
+  }
+
+  // Invitees & Staff lists
+  function addInvitee(contact, role){ if(!contact) return; if(state.invitees.some(i=>i.id===contact.id)) return; state.invitees.push({ id:contact.id, name:contact.name, email:contact.email, role }); renderInviteeList(); }
+  function removeInvitee(id){ state.invitees = state.invitees.filter(i=> i.id!==id); renderInviteeList(); }
+  function renderInviteeList(){
+    inviteeList.innerHTML='';
+    if(!state.invitees.length){ const empty=document.createElement('div'); empty.className='hint'; empty.textContent='No invitees added yet.'; inviteeList.appendChild(empty); return; }
+    state.invitees.forEach(i=>{
+      const row=document.createElement('div'); row.className='list-item';
+      row.innerHTML=`<div><strong>${i.name}</strong><div class="hint">${i.email} · Role: ${i.role}</div></div><div class="row"><select data-invitee-role="${i.id}">${meetingRoles.map(r=>`<option ${r.toLowerCase()===i.role.toLowerCase()?'selected':''}>${cap(r)}</option>`).join('')}</select><button class="btn" data-remove-invitee="${i.id}">Remove</button></div>`;
+      inviteeList.appendChild(row);
+    });
+    inviteeList.querySelectorAll('[data-remove-invitee]').forEach(btn=> btn.addEventListener('click',()=> removeInvitee(btn.getAttribute('data-remove-invitee'))));
+    inviteeList.querySelectorAll('[data-invitee-role]').forEach(sel=> sel.addEventListener('change',()=>{ const id=sel.getAttribute('data-invitee-role'); const inv=state.invitees.find(x=>x.id===id); if(inv) inv.role=sel.value; }));
+  }
+
+  function renderStaffList(){
+    staffList.innerHTML='';
+    if(!state.staffOnMeeting.length){ const empty=document.createElement('div'); empty.className='hint'; empty.textContent='No staff selected.'; staffList.appendChild(empty); return; }
+    state.staffOnMeeting.forEach(s=>{
+      const u = internalUsers.find(x=>x.id===s.id) || { name:'Unknown' };
+      const row = document.createElement('div'); row.className='list-item';
+      row.innerHTML = `<div><strong>${u.name}</strong><div class="hint">${u.title||''}</div></div><div class="row"><select data-staff-role="${s.id}">${meetingRoles.map(r=>`<option ${r.toLowerCase()===s.role.toLowerCase()?'selected':''}>${cap(r)}</option>`).join('')}</select><button class="btn" data-remove-staff="${s.id}">Remove</button></div>`;
+      staffList.appendChild(row);
+    });
+    staffList.querySelectorAll('[data-remove-staff]').forEach(btn=> btn.addEventListener('click',()=>{
+      const id=btn.getAttribute('data-remove-staff');
+      state.staffOnMeeting = state.staffOnMeeting.filter(x=>x.id!==id);
+      if(state.staff===id){ state.staff=null; attendingStaff.value=''; staffAvailability.style.display='none'; }
+      renderStaffList(); renderAvailability();
+    }));
+    staffList.querySelectorAll('[data-staff-role]').forEach(sel=> sel.addEventListener('change',()=>{ const id=sel.getAttribute('data-staff-role'); const st=state.staffOnMeeting.find(x=>x.id===id); if(st) st.role=sel.value; }));
+  }
+
+  // go
+  init();
+</script>
+</body>
+</html>
