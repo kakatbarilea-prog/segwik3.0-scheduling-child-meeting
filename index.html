@@ -8,6 +8,8 @@
   :root{
     --bg:#f6f8fb; --card:#ffffff; --ink:#243048; --muted:#667085; --line:#e6ebf2; --accent:#0F2D56; --ok:#0b62ff;
     --chip:#f4f7fb; --chip-line:#e7edf5; --pill:#eaf1ff; --pill-ink:#356aff;
+    --person-bg:#f2f4f7; /* gray background for chosen Invitees & Staff */
+    --person-line:#e0e4ec;
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;font-family:'Segoe UI',system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--ink)}
@@ -69,11 +71,11 @@
   .timebar-right .inline-label{font-weight:700}
 
   .grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} /* equal width columns now */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .row{display:flex;gap:12px;flex-wrap:wrap}
   .field{display:flex;flex-direction:column;gap:8px}
   label{font-size:14px;color:#1f2a44;font-weight:600}
-  .hint{font-size:12px;color:var(--muted)}
+  .hint{font-size:12px;color:#667085}
   .input, select, input[type="datetime-local"]{width:100%;height:46px;border:1px solid #e7edf5;border-radius:8px;padding:0 12px;font-size:15px;color:#0f1f3a;background:#fff;outline:none}
   .input::placeholder{color:#97a3b6}
   select{appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');background-repeat:no-repeat;background-position:right 12px center;background-size:18px}
@@ -93,9 +95,44 @@
   .subpanel{padding:12px;display:none}
   .subpanel.active{display:block}
   .list{display:flex;flex-direction:column;gap:8px}
-  .list-item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}
 
-  /* Suggested contacts “one big box” */
+  /* Person card */
+  .person-card{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:var(--person-bg);
+    border:1px solid var(--person-line);
+    border-radius:12px;
+    padding:12px;
+  }
+  .person-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+  .avatar{
+    width:36px;height:36px;border-radius:50%;flex:0 0 36px;
+    background:#e6ecf7;color:#0f2142;display:grid;place-items:center;font-weight:700;font-size:14px;
+    overflow:hidden;border:1px solid #dfe6f3;
+  }
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .meta{min-width:0}
+  .name-row{display:flex;align-items:center;gap:8px}
+  .name-row strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px}
+  .remove-x{background:transparent;border:none;color:#1f2a44;opacity:.7;cursor:pointer;font-size:16px;line-height:1}
+  .remove-x:hover{opacity:1}
+  .subline{font-size:12px;color:#667085;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .person-right{display:flex;align-items:center;gap:10px}
+
+  /* View Profile: plain text link (no border/background) */
+  .view-link{
+    display:inline;
+    color:#0b62ff;
+    font-weight:600;
+    text-decoration:underline;
+    border:none;
+    background:transparent;
+    padding:0;
+    border-radius:0;
+  }
+  .view-link:hover{opacity:.9}
+
+  /* Suggested contacts */
   .suggested-box{
     background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto;
   }
@@ -104,18 +141,13 @@
   }
   .suggested-row .meta{min-width:0}
   .suggested-row .name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .suggested-row .email{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .suggested-row .email{font-size:12px;color:#var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* Availability (inside Staff tab) */
   .avail{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}
   .avail-head{display:flex;align-items:center;justify-content:space-between}
 
-  /* Reference-only look for availability box */
-  .avail.reference{
-    background:#f7f8fb;            /* soft gray panel */
-    border-style:dashed;            /* visual separation from form */
-    position:relative;
-  }
+  .avail.reference{background:#f7f8fb;border-style:dashed;position:relative}
   .ref-banner{
     display:flex; align-items:center; gap:8px;
     background:#eef1f6;
@@ -129,33 +161,37 @@
   }
   .ref-banner svg{ flex:0 0 auto }
 
-  /* Slight card lift for the two inner panels to keep them readable */
-  .cal, .time-panel{
-    background:#fff;
-    box-shadow:0 1px 0 rgba(16,24,40,.02);
-  }
-
+  .cal, .time-panel{background:#fff;box-shadow:0 1px 0 rgba(16,24,40,.02)}
   .avail-head strong{ color:#101828; }
   .avail-muted{ color:#667085; }
 
   .day{border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;background:#fff}
-  .day h4{margin:0;font-size:12px;color:var(--muted)}
+  .day h4{margin:0;font-size:12px;color:#var(--muted)}
   .slot{display:block;width:100%;background:#f8fafc;border:1px solid #e7edf5;padding:8px;text-align:center;border-radius:8px;cursor:pointer;font-size:12px}
   .slot[disabled]{opacity:.45;cursor:not-allowed}
   .slot.active{outline:2px solid var(--accent)}
 
   /* Footer actions */
-  .actions{display:flex;justify-content:flex-end;gap:10px;padding:12px;border-top:1px solid var(--line)}
+  .actions{display:flex;justify-content:flex-end;gap:10px;padding:12px;border-top:1px solid var(--line);flex-wrap:wrap}
   .btn{padding:10px 14px;border-radius:10px;border:1px solid #d0d7e2;background:#fff;cursor:pointer;font-weight:700}
   .btn.primary{background:var(--ok);border-color:var(--ok);color:#fff}
   .btn.ghost{background:#f4f7fb}
+  .error-note{
+    flex-basis:100%;
+    color:#B42318;
+    background:#FEF3F2;
+    border:1px solid #FEE4E2;
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:12px;
+    display:none;
+  }
 
   @media (max-width:940px){.grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.avail-days{grid-template-columns:repeat(2,1fr)}}
-
   .list-item .row{ flex-wrap:nowrap; gap:8px; }
   .list-item .btn{ padding:8px 10px; }
 
-  /* ===== Suggested Availability (Calendly-style) ===== */
+  /* Suggested Availability (Calendly-style) */
   .avail-head{margin-bottom:8px}
   .avail-title{display:flex;align-items:center;gap:10px}
   .avail-muted{color:var(--muted);font-size:12px}
@@ -163,33 +199,77 @@
   .cal-wrap{display:grid;grid-template-columns: 320px 1fr; gap:20px; align-items:start}
   @media (max-width:860px){ .cal-wrap{grid-template-columns:1fr} }
 
-  .cal{
-    border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;
-  }
-  .cal-head{
-    display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line)
-  }
+  .cal{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line)}
   .cal-nav{display:flex;align-items:center;gap:8px}
   .cal-nav .chip{padding:6px 10px}
   .cal-month{font-weight:700}
 
   .cal-grid{display:grid;grid-template-columns: repeat(7, 1fr);gap:6px;padding:12px}
   .cal-dow{font-size:11px;color:#667085;text-transform:uppercase;text-align:center}
-  .cal-day{
-    height:40px;display:grid;place-items:center;border-radius:10px;cursor:pointer;border:1px solid transparent;color:var(--ink);background:#fff;
-  }
+  .cal-day{height:40px;display:grid;place-items:center;border-radius:10px;cursor:pointer;border:1px solid transparent;color:var(--ink);background:#fff}
   .cal-day:hover{ border-color:#dfe6f3; background:#f7faff }
   .cal-day.out{ color:#a7b1c2; background:#fafbfe }
   .cal-day.today{ outline:2px solid #e0ebff }
   .cal-day.selected{ background:#eaf1ff; border-color:#cfe0ff; color:#0b62ff; font-weight:700 }
 
-  .time-panel{
-    border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px;min-height:260px;
-  }
+  .time-panel{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px;min-height:260px}
   .time-panel h4{margin:0 0 8px 0}
   .time-list{display:flex;flex-direction:column;gap:10px}
   .time-row{border:none;background:transparent;padding:4px 0;font-weight:600;color:#0b62ff}
-  .time-empty{color:var(--muted);font-size:14px;padding:12px}
+  .time-empty{color:#667085;font-size:14px;padding:12px}
+
+  /* Step 3 Rich text editors */
+  .rte{border:1px solid #e7edf5;border-radius:10px;min-height:120px;padding:10px;background:#fff}
+  .rte[contenteditable="true"]:focus{outline:2px solid #cfe0ff}
+
+  /* Step 4 Agenda */
+  .agenda-list{display:flex;flex-direction:column;gap:10px}
+  .agenda-item{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px}
+  .agenda-handle{width:30px;height:30px;border-radius:6px;border:1px solid #e7edf5;display:grid;place-items:center;cursor:grab;user-select:none;background:#f6f8fb}
+  .dots{display:grid;grid-template-columns:repeat(2,4px);grid-auto-rows:4px;gap:4px}
+  .dots span{width:4px;height:4px;background:#97a3b6;border-radius:1px;display:block}
+  .agenda-main{flex:1;min-width:0}
+  .agenda-title{font-weight:700}
+  .agenda-sub{font-size:12px;color:#667085}
+  .agenda-actions{display:flex;gap:8px}
+  .icon-btn{border:1px solid #d0d7e2;background:#fff;border-radius:8px;padding:8px;cursor:pointer}
+  .icon{width:16px;height:16px;display:inline-block}
+  .agenda-editing .view{display:none}
+  .agenda-editing .edit{display:block}
+  .edit{display:none}
+  .edit-row{display:flex;gap:8px;margin-top:6px}
+  .edit-row input{height:40px}
+  .add-agenda{margin-top:8px}
+  .inline-num{width:120px}
+
+  /* Step 5 Location */
+  .loc-tabs{display:inline-flex;gap:8px;background:#eef4fb;border:1px solid var(--line);border-radius:12px;padding:4px}
+  .loc-tab{padding:8px 14px;border:none;border-radius:10px;background:transparent;font-weight:600;cursor:pointer}
+  .loc-tab[aria-selected="true"]{background:#fff;border:1px solid var(--line)}
+  .loc-panel{margin-top:12px}
+  .recommended{margin-top:8px}
+  .rec-list{display:flex;flex-direction:column;gap:8px}
+  .rec-item{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px;display:flex;justify-content:space-between;align-items:center}
+  .rec-item .btn{padding:6px 10px}
+  .search-org{height:46px;border:1px solid #e7edf5;border-radius:8px;padding:0 12px;width:100%}
+  .zoom-input{height:46px;border:1px solid #e7edf5;border-radius:8px;padding:0 12px;width:100%}
+  .muted{color:#667085;font-size:13px}
+  .hidden{display:none !important}
+
+  /* Selected location (plain text) */
+  .selected-loc{margin:8px 0 4px;font-size:14px;color:#0b62ff;font-weight:400}
+
+  /* Add New Location overlay */
+  .overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:30;padding:16px}
+  .overlay.open{display:flex}
+  .loc-modal{width:min(560px,96vw);background:#fff;border:1px solid #e7edf5;border-radius:12px;box-shadow:0 14px 60px rgba(0,0,0,.2)}
+  .loc-modal-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .loc-modal-head h4{margin:0;font-size:16px}
+  .loc-modal-body{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .loc-modal-body .full{grid-column:1 / -1}
+  .loc-modal-close{background:transparent;border:none;font-size:18px;cursor:pointer}
+  .loc-modal-foot{padding:12px 14px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
 </style>
 </head>
 <body>
@@ -209,148 +289,328 @@
         </div>
 
         <div class="panel">
-          <!-- Row 1: Meeting name + Status + Stage -->
-          <div class="grid3">
-            <div class="field">
-              <label for="meetingName">Meeting name</label>
-              <input class="input" id="meetingName" />
-            </div>
-
-            <div class="field">
-              <div class="inline-select" id="statusSelect">
-                <span class="inline-label">Meeting Status:</span>
-                <button type="button" class="inline-value" id="statusValue">Active</button>
-                <div class="inline-menu" id="statusMenu"></div>
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="inline-select" id="stageSelect">
-                <span class="inline-label">Meeting Stage:</span>
-                <button type="button" class="inline-value" id="stageValue">Scheduled</button>
-                <div class="inline-menu" id="stageMenu"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Row 2: Start/End + Timezone -->
-          <div class="timebar" style="margin-top:12px">
-            <div class="timebar-left">
-              <input type="date" class="input-time" id="startDate">
-              <input type="time" class="input-time" id="startTime" step="900">
-              <span class="timebar-sep">to</span>
-              <input type="date" class="input-time" id="endDate">
-              <input type="time" class="input-time" id="endTime" step="900">
-            </div>
-            <div class="timebar-right">
-              <span class="inline-label">Timezone:</span>
-              <div class="inline-select" id="tzSelect">
-                <button type="button" class="inline-value" id="tzValue">America/New_York</button>
-                <div class="inline-menu" id="tzMenu"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Row 3: Subtabs Invitees | Staff -->
-          <div class="subtabs" role="tablist" aria-label="Participant setup" style="margin-top:16px">
-            <button class="subtab" id="tabInvitees" aria-selected="true" aria-controls="panelInvitees">Invitees</button>
-            <button class="subtab" id="tabStaff" aria-selected="false" aria-controls="panelStaff">Staff</button>
-          </div>
-
-          <!-- Invitees Panel -->
-          <div id="panelInvitees" class="subpanel active" role="tabpanel" aria-labelledby="tabInvitees">
-            <div class="grid2">
-              <!-- LEFT: Contact picker -->
+          <!-- =============== STEP 2 PANEL (existing content) =============== -->
+          <div id="step2Panel">
+            <!-- Row 1: Meeting name + Status + Stage -->
+            <div class="grid3">
               <div class="field">
-                <label for="customerPicker">Contacts</label>
+                <label for="meetingName">Meeting name</label>
+                <input class="input" id="meetingName" />
+              </div>
+
+              <div class="field">
+                <div class="inline-select" id="statusSelect">
+                  <span class="inline-label">Meeting Status:</span>
+                  <button type="button" class="inline-value" id="statusValue">Active</button>
+                  <div class="inline-menu" id="statusMenu"></div>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="inline-select" id="stageSelect">
+                  <span class="inline-label">Meeting Stage:</span>
+                  <button type="button" class="inline-value" id="stageValue">Scheduled</button>
+                  <div class="inline-menu" id="stageMenu"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2: Start/End + Timezone -->
+            <div class="timebar" style="margin-top:12px">
+              <div class="timebar-left">
+                <input type="date" class="input-time" id="startDate">
+                <input type="time" class="input-time" id="startTime" step="900">
+                <span class="timebar-sep">to</span>
+                <input type="date" class="input-time" id="endDate">
+                <input type="time" class="input-time" id="endTime" step="900">
+              </div>
+              <div class="timebar-right">
+                <span class="inline-label">Timezone:</span>
+                <div class="inline-select" id="tzSelect">
+                  <button type="button" class="inline-value" id="tzValue">America/New_York</button>
+                  <div class="inline-menu" id="tzMenu"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 3: Subtabs Invitees | Staff -->
+            <div class="subtabs" role="tablist" aria-label="Participant setup" style="margin-top:16px">
+              <button class="subtab" id="tabInvitees" aria-selected="true" aria-controls="panelInvitees">Invitees</button>
+              <button class="subtab" id="tabStaff" aria-selected="false" aria-controls="panelStaff">Staff</button>
+            </div>
+
+            <!-- Invitees Panel -->
+            <div id="panelInvitees" class="subpanel active" role="tabpanel" aria-labelledby="tabInvitees">
+              <div class="grid2">
+                <!-- LEFT: Contact picker -->
+                <div class="field">
+                  <label for="customerPicker">Contacts</label>
+                  <div class="row">
+                    <select id="customerPicker" style="flex:1"></select>
+                    <!-- Removed the Add button -->
+                  </div>
+                  <div class="hint">
+                    <a href="#" id="addContactLink" style="color:#356aff;text-decoration:underline">+Add Contact</a>
+                  </div>
+                </div>
+
+                <!-- RIGHT: Suggested contacts (one big box) -->
+                <div class="field">
+                  <label>Suggested contacts</label>
+                  <div class="suggested-box" id="suggestedContacts"></div>
+                </div>
+              </div>
+
+              <div style="height:8px"></div>
+              <label>Invitee list</label>
+              <div class="list" id="inviteeList"></div>
+            </div>
+
+            <!-- Staff Panel -->
+            <div id="panelStaff" class="subpanel" role="tabpanel" aria-labelledby="tabStaff">
+              <div class="field">
+                <label for="attendingStaff">(Internal Users)</label>
                 <div class="row">
-                  <select id="customerPicker" style="flex:1"></select>
-                  <button class="btn" id="addInviteeBtn" style="flex:0 0 auto">Add</button>
-                </div>
-                <div class="hint">
-                  <a href="#" id="addContactLink" style="color:#356aff;text-decoration:underline">+Add Contact</a>
+                  <select id="attendingStaff" style="flex:1"></select>
+                  <!-- Removed staff role select and Add remains -->
+                  <button class="btn" id="addStaffBtn" style="flex:0 0 auto">Add</button>
                 </div>
               </div>
 
-              <!-- RIGHT: Suggested contacts (one big box) -->
+              <div class="list" id="staffList" style="margin-top:8px"></div>
+
+              <!-- Availability lives here -->
+              <div class="avail reference" id="staffAvailability" style="display:none" role="note" aria-label="Reference availability">
+                <div class="avail-head">
+                  <div class="avail-title">
+                    <strong>Available times</strong>
+                    <span class="avail-muted" id="availabilityHint">Select an Attending Staff to view availability.</span>
+                  </div>
+                  <div class="avail-muted"></div>
+                </div>
+
+                <div class="ref-banner" aria-hidden="true" title="This panel does not change your meeting times">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8"  x2="12" y2="8"></line>
+                  </svg>
+                  Please check a teammate’s calendar before you choose your own start/end above.
+                </div>
+
+                <div class="cal-wrap">
+                  <!-- Calendar -->
+                  <div class="cal">
+                    <div class="cal-head">
+                      <div class="cal-nav">
+                        <button class="chip" id="calPrev">◀</button>
+                        <button class="chip" id="calToday">Today</button>
+                        <button class="chip" id="calNext">▶</button>
+                      </div>
+                      <div class="cal-month" id="calMonthLabel">Month YYYY</div>
+                    </div>
+                    <div class="cal-grid" id="calGrid"></div>
+                  </div>
+
+                  <!-- Times list -->
+                  <div class="time-panel">
+                    <h4 id="timePanelTitle">Times</h4>
+                    <div class="time-list" id="timeList"></div>
+                  </div>
+                </div>
+              </div> <!-- /avail -->
+            </div> <!-- /panelStaff -->
+          </div> <!-- /step2Panel -->
+
+          <!-- =============== STEP 3 PANEL =============== -->
+          <div id="step3Panel" class="hidden">
+            <!-- First row persists -->
+            <div class="grid3">
               <div class="field">
-                <label>Suggested contacts</label>
-                <div class="suggested-box" id="suggestedContacts"></div>
+                <label for="meetingName_s3">Meeting name</label>
+                <input class="input" id="meetingName_s3" />
+              </div>
+
+              <div class="field">
+                <div class="inline-select">
+                  <span class="inline-label">Meeting Status:</span>
+                  <button type="button" class="inline-value" id="statusValue_s3">Active</button>
+                  <div class="inline-menu" id="statusMenu_s3"></div>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="inline-select">
+                  <span class="inline-label">Meeting Stage:</span>
+                  <button type="button" class="inline-value" id="stageValue_s3">Scheduled</button>
+                  <div class="inline-menu" id="stageMenu_s3"></div>
+                </div>
               </div>
             </div>
 
-            <div style="height:8px"></div>
-            <label>Invitee list</label>
-            <div class="list" id="inviteeList"></div>
+            <div class="grid2" style="margin-top:12px">
+              <div class="field" style="grid-column:1 / -1">
+                <label for="shortDesc">Short Description</label>
+                <textarea id="shortDesc" class="input" placeholder=""></textarea>
+              </div>
+
+              <div class="field" style="grid-column:1 / -1">
+                <label>Long Description</label>
+                <div id="longDesc" class="rte" contenteditable="true" spellcheck="true"></div>
+              </div>
+
+              <div class="field" style="grid-column:1 / -1">
+                <label>Notes</label>
+                <div id="notesDesc" class="rte" contenteditable="true" spellcheck="true"></div>
+              </div>
+            </div>
           </div>
 
-          <!-- Staff Panel -->
-          <div id="panelStaff" class="subpanel" role="tabpanel" aria-labelledby="tabStaff">
-            <div class="field">
-              <label for="attendingStaff">(Internal Users)</label>
-              <div class="row">
-                <select id="attendingStaff" style="flex:2"></select>
-                <select id="staffRole" style="flex:1"></select>
-                <button class="btn" id="addStaffBtn" style="flex:0 0 auto">Add</button>
+          <!-- =============== STEP 4 PANEL =============== -->
+          <div id="step4Panel" class="hidden">
+            <!-- First row persists -->
+            <div class="grid3">
+              <div class="field">
+                <label for="meetingName_s4">Meeting name</label>
+                <input class="input" id="meetingName_s4" />
+              </div>
+
+              <div class="field">
+                <div class="inline-select">
+                  <span class="inline-label">Meeting Status:</span>
+                  <button type="button" class="inline-value" id="statusValue_s4">Active</button>
+                  <div class="inline-menu" id="statusMenu_s4"></div>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="inline-select">
+                  <span class="inline-label">Meeting Stage:</span>
+                  <button type="button" class="inline-value" id="stageValue_s4">Scheduled</button>
+                  <div class="inline-menu" id="stageMenu_s4"></div>
+                </div>
               </div>
             </div>
 
-            <div class="list" id="staffList" style="margin-top:8px"></div>
+            <div style="margin-top:12px">
+              <div class="agenda-list" id="agendaList"></div>
+              <button class="btn add-agenda" id="addAgendaBtn">+ Add Agenda Item</button>
+            </div>
+          </div>
 
-            <!-- Availability lives here -->
-            <div class="avail reference" id="staffAvailability" style="display:none" role="note" aria-label="Reference availability">
-              <div class="avail-head">
-                <div class="avail-title">
-                  <strong>Available times</strong>
-                  <span class="avail-muted" id="availabilityHint">Select an Attending Staff to view availability.</span>
+          <!-- =============== STEP 5 PANEL =============== -->
+          <div id="step5Panel" class="hidden">
+            <!-- First row persists -->
+            <div class="grid3">
+              <div class="field">
+                <label for="meetingName_s5">Meeting name</label>
+                <input class="input" id="meetingName_s5" />
+              </div>
+
+              <div class="field">
+                <div class="inline-select">
+                  <span class="inline-label">Meeting Status:</span>
+                  <button type="button" class="inline-value" id="statusValue_s5">Active</button>
+                  <div class="inline-menu" id="statusMenu_s5"></div>
                 </div>
-                <div class="avail-muted"></div>
               </div>
 
-              <div class="ref-banner" aria-hidden="true" title="This panel does not change your meeting times">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                  <line x1="12" y1="8"  x2="12" y2="8"></line>
-                </svg>
-                Please check a teammate’s calendar before you choose your own start/end above.
+              <div class="field">
+                <div class="inline-select">
+                  <span class="inline-label">Meeting Stage:</span>
+                  <button type="button" class="inline-value" id="stageValue_s5">Scheduled</button>
+                  <div class="inline-menu" id="stageMenu_s5"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <label>Location</label>
+              <div id="selectedLocation" class="selected-loc hidden"></div>
+
+              <div class="loc-tabs" role="tablist" aria-label="Location mode">
+                <button class="loc-tab" id="locInPerson" aria-selected="true">In-Person</button>
+                <button class="loc-tab" id="locVirtual" aria-selected="false">Virtual</button>
               </div>
 
-              <div class="cal-wrap">
-                <!-- Calendar -->
-                <div class="cal">
-                  <div class="cal-head">
-                    <div class="cal-nav">
-                      <button class="chip" id="calPrev">◀</button>
-                      <button class="chip" id="calToday">Today</button>
-                      <button class="chip" id="calNext">▶</button>
+              <!-- In-Person -->
+              <div id="inPersonPanel" class="loc-panel">
+                <div class="recommended">
+                  <div class="muted" style="margin-bottom:6px">Recommended Locations</div>
+                  <div class="rec-list" id="recList" style="margin-top:8px"></div>
+
+                  <div style="margin-top:10px" class="field">
+                    <input class="search-org" id="orgSearch" placeholder="Search organization to get Location">
+                    <div id="searchResults" class="rec-list" style="margin-top:8px"></div>
+                    <div style="margin-top:8px">
+                      <button id="addNewLink" style="background:none;border:none;color:#0b62ff;cursor:pointer;font-weight:700;padding:0">+ Add New</button>
                     </div>
-                    <div class="cal-month" id="calMonthLabel">Month YYYY</div>
                   </div>
-                  <div class="cal-grid" id="calGrid">
-                    <!-- DOW + days injected by JS -->
-                  </div>
-                </div>
-
-                <!-- Times list -->
-                <div class="time-panel">
-                  <h4 id="timePanelTitle">Times</h4>
-                  <div class="time-list" id="timeList"></div>
                 </div>
               </div>
-            </div> <!-- /avail -->
-          </div> <!-- /panelStaff -->
+
+              <!-- Virtual -->
+              <div id="virtualPanel" class="loc-panel hidden">
+                <div class="field">
+                  <label for="zoomUrl">Zoom Url</label>
+                  <input id="zoomUrl" class="zoom-input" placeholder="Zoom Url">
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div> <!-- /panel -->
 
+        <!-- Footer actions -->
         <div class="actions">
           <button class="btn ghost" id="closeModal">Cancel</button>
+          <button class="btn" id="backBtn" class="hidden">Back</button>
           <button class="btn" id="saveDraftBtn">Save as Draft</button>
-          <button class="btn primary" id="scheduleBtn">Schedule Meeting</button>
+          <button class="btn primary" id="nextBtn">Next</button>
+          <button class="btn primary hidden" id="scheduleBtn">Schedule Meeting</button>
+
+          <div id="step2Error" class="error-note">Please add at least one Invitee and one Staff member before proceeding.</div>
         </div>
       </div> <!-- /dialog -->
     </div> <!-- /modal -->
   </div> <!-- /wrap -->
+
+  <!-- ===== Add New Location Overlay ===== -->
+  <div class="overlay" id="addLocOverlay" aria-hidden="true">
+    <div class="loc-modal" role="dialog" aria-modal="true" aria-labelledby="addLocTitle">
+      <div class="loc-modal-head">
+        <h4 id="addLocTitle">Add New Location</h4>
+        <button class="loc-modal-close" id="addLocClose" aria-label="Close">✖</button>
+      </div>
+      <div class="loc-modal-body">
+        <div class="field full">
+          <label for="addr1">Address</label>
+          <input class="input" id="addr1" placeholder="123 Main St" />
+        </div>
+        <div class="field full">
+          <label for="addr2">Address 2</label>
+          <input class="input" id="addr2" placeholder="Suite / Apt" />
+        </div>
+        <div class="field">
+          <label for="city">City</label>
+          <input class="input" id="city" placeholder="City" />
+        </div>
+        <div class="field">
+          <label for="state">State</label>
+          <input class="input" id="state" placeholder="State" />
+        </div>
+        <div class="field full">
+          <label for="zip">Zip</label>
+          <input class="input" id="zip" placeholder="Zip" />
+        </div>
+      </div>
+      <div class="loc-modal-foot">
+        <button class="btn" id="addLocCancel">Cancel</button>
+        <button class="btn primary" id="saveLocationBtn">Save Location</button>
+      </div>
+    </div>
+  </div>
 
 <script>
   // ===== Dummy Data =====
@@ -374,33 +634,72 @@
   }
 
   const loggedInUser = { id: 'u-100', name: 'Alex Johnson', email: 'alex@segwik.example' };
-  const meetingRoles = ['attendee','guest','special guest','host','sponsor','client','colleague','member','potential ambassador','invitee','board member']; // used for STAFF only
+
   const internalUsers = [
     { id:'u-101', name:'Priya Patel', title:'Account Executive', tz:'America/New_York',
+      email:'priya@segwik.example', phone:'(201) 555-0191', profileUrl:'#', avatar:'',
       busy:[ { start: off(0,13,0), end: off(0,14,0) }, { start: off(1,10,30), end: off(1,11,30) }, { start: off(3,15,0), end: off(3,16,0) } ],
       working:{ startHour:9, endHour:17 }
     },
     { id:'u-102', name:'Miguel Santos', title:'Solutions Consultant', tz:'America/New_York',
+      email:'miguel@segwik.example', phone:'(212) 555-0127', profileUrl:'#', avatar:'',
       busy:[ { start: off(0,9,0), end: off(0,9,30) }, { start: off(2,13,30), end: off(2,15,0) } ],
       working:{ startHour:8, endHour:16 }
     },
-    { id:'u-103', name:'Jade Williams', title:'CSM', tz:'America/New_York', busy:[ { start: off(4,11,0), end: off(4,12,0) } ], working:{ startHour:10, endHour:18 } },
+    { id:'u-103', name:'Jade Williams', title:'CSM', tz:'America/New_York',
+      email:'jade@segwik.example', phone:'(973) 555-0114', profileUrl:'#', avatar:'',
+      busy:[ { start: off(4,11,0), end: off(4,12,0) } ], working:{ startHour:10, endHour:18 } },
   ];
   const customers = [
-    { id:'c-201', name:'Acme Corp – Dana Scott', email:'dana@acme.example' },
-    { id:'c-202', name:'Rivertown Realty – Chris Lee', email:'chris@rivertown.example' },
-    { id:'c-203', name:'Blue Harbor Dental – Dr. N. Patel', email:'np@bh-dental.example' },
-    { id:'c-204', name:'Fresh Start Advancement – Anthony Rosa', email:'anthony@fsa.example' },
+    { id:'c-201', name:'Acme Corp – Dana Scott', email:'dana@acme.example', phone:'(973) 555-0100', profileUrl:'#', avatar:'' },
+    { id:'c-202', name:'Rivertown Realty – Chris Lee', email:'chris@rivertown.example', phone:'(551) 555-0142', profileUrl:'#', avatar:'' },
+    { id:'c-203', name:'Blue Harbor Dental – Dr. N. Patel', email:'np@bh-dental.example', phone:'(201) 555-0176', profileUrl:'#', avatar:'' },
+    { id:'c-204', name:'Fresh Start Advancement – Anthony Rosa', email:'anthony@fsa.example', phone:'(914) 555-0153', profileUrl:'#', avatar:'' },
   ];
-let suggested = [
+  let suggested = [
+    { id:'c-205', name:'Garden State Roofing – Alicia Kim', email:'alicia@gstate.example', phone:'', profileUrl:'#', avatar:'' },
+    { id:'c-206', name:'Oceanview Fitness – Mark Chen', email:'mark@ovfit.example', phone:'', profileUrl:'#', avatar:'' },
+    { id:'c-207', name:'North Ridge Pediatrics – Dr. Lee', email:'lee@nrpeds.example', phone:'', profileUrl:'#', avatar:'' },
+  ];
 
-    { id:'c-205', name:'Garden State Roofing – Alicia Kim', email:'alicia@gstate.example' },
-    { id:'c-206', name:'Oceanview Fitness – Mark Chen', email:'mark@ovfit.example' },
-    { id:'c-207', name:'North Ridge Pediatrics – Dr. Lee', email:'lee@nrpeds.example' },
+  const ORG_LOCATIONS = [
+    'Segwik HQ, 10 River Dr S, Jersey City, NJ',
+    'City Lifestyle Media, 77 Hudson St, Jersey City, NJ',
+    'Harborside Atrium, 200 Hudson St, Jersey City, NJ',
+    'Liberty Science Center, 222 Jersey City Blvd, Jersey City, NJ',
+    'Journal Square PATH, 1 Journal Square, Jersey City, NJ'
   ];
 
   // ===== State =====
-  const state = { status:'Active', stage:'Scheduled', timezone:'America/New_York', staff:null, weekOffset:0, invitees:[], staffOnMeeting:[] };
+  const state = {
+    step: 2,
+    status:'Active',
+    stage:'Scheduled',
+    timezone:'America/New_York',
+    staff:null,
+    weekOffset:0,
+    invitees:[],
+    staffOnMeeting:[], // now just [{id}]
+    meetingName:'',
+    descriptions:{ short:'', long:'', notes:'' },
+    agendas: [
+      { id: 'a1', title:'Welcome & Context', duration:2, desc:'Quick intros, meeting flow, confirm time constraints.' },
+      { id: 'a2', title:'Goals & Success Criteria', duration:5, desc:'Clarify primary objectives for the next 90 days and how success will be measured.' },
+      { id: 'a3', title:'Audience & Current Marketing', duration:7, desc:'Who they need to reach; what’s running today; what’s working/not; budget comfort.' },
+      { id: 'a4', title:'Editorial & Benefits Overview', duration:6, desc:'How City Lifestyle blends editorial features, print + digital placements, and event amplification (City Scene, calendars); discuss story angles and asset readiness.' },
+      { id: 'a5', title:'Packages, Timing & Fit', duration:6, desc:'Align on timing (launch windows), expected outcomes, and budget band; confirm decision process.' },
+      { id: 'a6', title:'Next Steps & Scheduling', duration:3, desc:'Decide path (proposal / editorial kickoff / follow-up), assign action items, and schedule any follow-up.' },
+      { id: 'a7', title:'Close', duration:1, desc:'Recap commitments and thank them for their time.' }
+    ],
+    locationMode: 'inperson',
+    recommended: [
+      '123 Main Street, Jersey City, NJ',
+      '77 Hudson St, Jersey City, NJ',
+      '1 Journal Square, Jersey City, NJ'
+    ],
+    zoomUrl: '',
+    selectedLocation: ''
+  };
   const defaultSlotMinutes = 30;
   state.refMonth = new Date();
   state.selectedCalDate = new Date();
@@ -422,62 +721,57 @@ let suggested = [
   }
   function startOfDay(d){ const x=new Date(d); x.setHours(0,0,0,0); return x; }
   function dateAtTime(baseDate, hhmm){ const [hh,mm] = hhmm.split(':').map(Number); const d = new Date(baseDate); d.setHours(hh, mm, 0, 0); return d; }
+  function initialsFromName(name){
+    const n = name.replace(/—|–/g,' ').split(' ').filter(Boolean);
+    const a = (n[0]?.[0]||'').toUpperCase();
+    const b = (n[1]?.[0]||'').toUpperCase();
+    return (a+b) || '•';
+  }
 
-function renderSuggested(){
-  suggestedContacts.innerHTML = suggested.map(c=>`
-    <div class="suggested-row">
-      <div class="meta" style="flex:1;min-width:0">
-        <div class="name">${displayNameNameFirst(c.name)}</div>
-        <div class="email">${c.email}</div>
+  function renderSuggested(){
+    const suggestedContacts = document.getElementById('suggestedContacts');
+    suggestedContacts.innerHTML = suggested.map(c=>`
+      <div class="suggested-row">
+        <div class="meta" style="flex:1;min-width:0">
+          <div class="name">${displayNameNameFirst(c.name)}</div>
+          <div class="email">${c.email}</div>
+        </div>
+        <button class="btn" data-add-contact="${c.id}">Add</button>
       </div>
-      <button class="btn" data-add-contact="${c.id}">Add</button>
-    </div>
-  `).join('');
-}
+    `).join('');
+  }
 
-
-  // Patterned dummy availability with 3 rotating sets; weekends off
+  // Dummy availability
   const DUMMY_BY_USER = {
-    "u-101": {
-      anchor: new Date(2025,9,31), repeat: 4,
-      patterns: [
-        [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-        [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-        [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-      ]
-    },
-    "u-102": {
-      anchor: new Date(2025,9,31), repeat: 4,
-      patterns: [
-        [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-        [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-        [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-      ]
-    },
-    "u-103": {
-      anchor: new Date(2025,9,31), repeat: 4,
-      patterns: [
-        [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-        [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-        [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-      ]
-    },
+    "u-101": { anchor: new Date(2025,9,31), repeat: 4, patterns: [
+      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
+      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
+      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
+    ]},
+    "u-102": { anchor: new Date(2025,9,31), repeat: 4, patterns: [
+      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
+      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
+      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
+    ]},
+    "u-103": { anchor: new Date(2025,9,31), repeat: 4, patterns: [
+      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
+      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
+      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
+    ]}
   };
 
   function getDummySlotsForUserOnDate(userId, date){
     const dow = date.getDay();
-    if (dow === 0 || dow === 6) return []; // weekends: none
+    if (dow === 0 || dow === 6) return [];
     const cfg = DUMMY_BY_USER[userId];
     if (!cfg) return [];
     const oneDay = 86400000;
     const diffDays = Math.floor((startOfDay(date) - startOfDay(cfg.anchor)) / oneDay);
-    if (diffDays % cfg.repeat !== 0) return []; // only pattern dates
+    if (diffDays % cfg.repeat !== 0) return [];
     const patternIndex = Math.floor(diffDays / cfg.repeat) % cfg.patterns.length;
     const chosen = cfg.patterns[patternIndex];
     return chosen.map(([s,e]) => ({ start: dateAtTime(date,s), end: dateAtTime(date,e) }));
   }
-
-  // Explicitly no fallback -> guarantees empty-state appears on non-pattern weekdays
   function buildSlotsForDay(user, date, slotMinutes){ return []; }
 
   // ===== DOM =====
@@ -500,49 +794,79 @@ function renderSuggested(){
 
   // invitees
   const customerPicker = document.getElementById('customerPicker');
-  const addInviteeBtn = document.getElementById('addInviteeBtn');
   const suggestedContacts = document.getElementById('suggestedContacts');
   const inviteeList = document.getElementById('inviteeList');
 
   // staff
   const attendingStaff = document.getElementById('attendingStaff');
-  const staffRole = document.getElementById('staffRole');
   const staffList = document.getElementById('staffList');
   const staffAvailability = document.getElementById('staffAvailability');
   const availabilityHint = document.getElementById('availabilityHint');
 
+  // steps + controls
+  const dlgTitle = document.getElementById('dlgTitle');
+  const step2Panel = document.getElementById('step2Panel');
+  const step3Panel = document.getElementById('step3Panel');
+  const step4Panel = document.getElementById('step4Panel');
+  const step5Panel = document.getElementById('step5Panel');
+  const nextBtn = document.getElementById('nextBtn');
+  const backBtn = document.getElementById('backBtn');
+  const scheduleBtn = document.getElementById('scheduleBtn');
+  const step2Error = document.getElementById('step2Error');
+
+  // step 4 agenda
+  const agendaList = document.getElementById('agendaList');
+  const addAgendaBtn = document.getElementById('addAgendaBtn');
+
+  // step 5 location
+  const locInPerson = document.getElementById('locInPerson');
+  const locVirtual = document.getElementById('locVirtual');
+  const inPersonPanel = document.getElementById('inPersonPanel');
+  const virtualPanel = document.getElementById('virtualPanel');
+  const recList = document.getElementById('recList');
+  const orgSearch = document.getElementById('orgSearch');
+  const searchResults = document.getElementById('searchResults');
+  const addNewLink = document.getElementById('addNewLink');
+  const zoomUrl = document.getElementById('zoomUrl');
+  const selectedLocationEl = document.getElementById('selectedLocation');
+
+  // Add New Location overlay elements
+  const addLocOverlay = document.getElementById('addLocOverlay');
+  const addLocClose = document.getElementById('addLocClose');
+  const addLocCancel = document.getElementById('addLocCancel');
+  const saveLocationBtn = document.getElementById('saveLocationBtn');
+  const addr1 = document.getElementById('addr1');
+  const addr2 = document.getElementById('addr2');
+  const city  = document.getElementById('city');
+  const stateInput = document.getElementById('state');
+  const zip   = document.getElementById('zip');
+
   function init(){
     createdByName.textContent = loggedInUser.name;
 
-    // Inline menus
+    // Inline menus (Step 2)
     const statusBtn  = document.getElementById('statusValue');
     const statusMenu = document.getElementById('statusMenu');
     statusBtn.textContent = state.status;
-    mountInlineMenu(statusBtn, statusMenu, STATUS_OPTIONS, (val)=>{ state.status = val; statusBtn.textContent = val; });
+    mountInlineMenu(statusBtn, statusMenu, STATUS_OPTIONS, (val)=>{ state.status = val; syncStatusAcross(); });
 
     const stageBtn  = document.getElementById('stageValue');
     const stageMenu = document.getElementById('stageMenu');
     stageBtn.textContent = state.stage;
-    mountInlineMenu(stageBtn, stageMenu, STAGE_OPTIONS, (val)=>{ state.stage = val; stageBtn.textContent = val; });
+    mountInlineMenu(stageBtn, stageMenu, STAGE_OPTIONS, (val)=>{ state.stage = val; syncStageAcross(); });
 
     const tzBtn  = document.getElementById('tzValue');
     const tzMenu = document.getElementById('tzMenu');
     tzBtn.textContent = state.timezone;
     mountInlineMenu(tzBtn, tzMenu, TZ_OPTIONS, (val)=>{ state.timezone = val; tzBtn.textContent = val; });
 
-    // STAFF roles (kept)
-    staffRole.innerHTML = meetingRoles.map(r=>`<option>${r.charAt(0).toUpperCase()+r.slice(1)}</option>`).join('');
-    staffRole.value = 'Host';
-
     // pickers
     attendingStaff.innerHTML = `<option value="">— Select staff —</option>` + internalUsers.map(u=>`<option value="${u.id}">${u.name} · ${u.title}</option>`).join('');
-    customerPicker.innerHTML = `<option value="">— Select contact —</option>` +
-      customers.map(c=>`<option value="${c.id}">${displayNameNameFirst(c.name)}</option>`).join('');
+    customerPicker.innerHTML = `<option value="">— Select contact —</option>` + customers.map(c=>`<option value="${c.id}">${displayNameNameFirst(c.name)}</option>`).join('');
 
     renderSuggested();
 
-
-    // default datetimes (next sensible time)
+    // default datetimes
     const now = new Date();
     now.setMinutes(now.getMinutes()<30?30:0,0,0);
     if(now.getMinutes()===0) now.setHours(now.getHours()+1);
@@ -556,62 +880,168 @@ function renderSuggested(){
     tabInvitees.addEventListener('click', ()=> switchSub('invitees'));
     tabStaff.addEventListener('click', ()=> switchSub('staff'));
 
-    // Invitees add
-    addInviteeBtn.addEventListener('click', ()=>{
-      const id = customerPicker.value; if(!id) return;
+    // Invitees: auto-add on select (removed "Add" button)
+    customerPicker.addEventListener('change', ()=>{
+      const id = customerPicker.value; 
+      if(!id) return;
       const c = [...customers, ...suggested].find(x=>x.id===id);
       addInvitee(c);
       customerPicker.value='';
     });
-    // Suggested add (delegated)
-  suggestedContacts.addEventListener('click', (e)=>{
-  const id = e.target?.getAttribute?.('data-add-contact'); 
-  if(!id) return;
-  const c = suggested.find(x=>x.id===id);
-  if(!c) return;
-  addInvitee(c);
-  // remove from suggestions then re-render
-  suggested = suggested.filter(x=>x.id !== id);
-  renderSuggested();
-});
 
+    // Suggested add (delegated) — removes from suggestions immediately
+    suggestedContacts.addEventListener('click', (e)=>{
+      const id = e.target?.getAttribute?.('data-add-contact'); 
+      if(!id) return;
+      const c = suggested.find(x=>x.id===id);
+      if(!c) return;
+      addInvitee(c);
+      suggested = suggested.filter(x=>x.id !== id);
+      renderSuggested();
+    });
 
     attendingStaff.addEventListener('change', onStaffChange);
-    document.getElementById('addStaffBtn').addEventListener('click', ()=>{
-  const id = attendingStaff.value;
-  if(!id) return;                           // if nothing is chosen, do nothing
 
-  // 1) Add the chosen staff to the list (only if not already there)
-  if(!state.staffOnMeeting.some(s=>s.id===id)){
-    state.staffOnMeeting.push({ id, role: staffRole.value });
-    renderStaffList();                      // refresh the list on screen
+    document.getElementById('addStaffBtn').addEventListener('click', ()=>{
+      const id = attendingStaff.value;
+      if(!id) return;
+      if(!state.staffOnMeeting.some(s=>s.id===id)){
+        state.staffOnMeeting.push({ id });
+        renderStaffList();
+      }
+      attendingStaff.value = '';
+      staffAvailability.style.display = 'block';
+      renderAvailability();
+    });
+
+    document.getElementById('saveDraftBtn').addEventListener('click', ()=> alert('Saved draft. (mock)'));
+
+    // Step navigation
+    backBtn.addEventListener('click', goBack);
+    nextBtn.addEventListener('click', goNext);
+    scheduleBtn.addEventListener('click', ()=> alert('Scheduled! (mock)'));
+
+    // Step 3/4/5 mirrors
+    setupMirrors();
+
+    // Step 4 agenda
+    renderAgenda();
+    addAgendaBtn.addEventListener('click', ()=>{
+      const id = 'a' + Math.random().toString(36).slice(2,8);
+      state.agendas.push({ id, title:'New Agenda Item', duration:5, desc:'Short description' });
+      renderAgenda();
+    });
+
+    // Step 5 locations
+    locInPerson.addEventListener('click', ()=> setLocationMode('inperson'));
+    locVirtual.addEventListener('click', ()=> setLocationMode('virtual'));
+    renderRecommended();
+    renderSelectedLocation();
+
+    orgSearch.addEventListener('input', ()=>{
+      const q = orgSearch.value.trim().toLowerCase();
+      if(!q){ searchResults.innerHTML = ''; return; }
+      const matches = ORG_LOCATIONS.filter(addr=> addr.toLowerCase().includes(q));
+      searchResults.innerHTML = matches.map(addr=>`
+        <div class="rec-item">
+          <div>${addr}</div>
+          <button class="btn" data-choose-loc="${addr.replace(/"/g,'&quot;')}">Use</button>
+        </div>
+      `).join('') || `<div class="muted">No results.</div>`;
+    });
+
+    searchResults.addEventListener('click', (e)=>{
+      const chosen = e.target?.getAttribute?.('data-choose-loc');
+      if(!chosen) return;
+      setSelectedLocation(chosen);
+    });
+
+    addNewLink.addEventListener('click', (e)=>{
+      e.preventDefault();
+      openAddLocation();
+    });
+
+    addLocClose.addEventListener('click', closeAddLocation);
+    addLocCancel.addEventListener('click', closeAddLocation);
+    addLocOverlay.addEventListener('click', (e)=>{ if(e.target===addLocOverlay) closeAddLocation(); });
+    saveLocationBtn.addEventListener('click', ()=>{
+      const composed = composeAddress();
+      if(!composed){ alert('Please enter at least an Address and City/State.'); return; }
+      setSelectedLocation(composed);
+      state.recommended.unshift(composed);
+      renderRecommended();
+      closeAddLocation();
+      addr1.value = addr2.value = city.value = stateInput.value = zip.value = '';
+    });
+
+    updateStepUI();
+
+    document.getElementById('meetingName').addEventListener('input', e => { state.meetingName = e.target.value; syncNameAcross(); });
   }
 
-  // 2) Put the staff picker back to the “— Select staff —” option
-  attendingStaff.value = '';
+  function composeAddress(){
+    const parts = [];
+    if(addr1.value.trim()) parts.push(addr1.value.trim());
+    if(addr2.value.trim()) parts.push(addr2.value.trim());
+    const cityState = [city.value.trim(), stateInput.value.trim()].filter(Boolean).join(', ');
+    if(cityState) parts.push(cityState);
+    if(zip.value.trim()) parts.push(zip.value.trim());
+    return parts.join(', ');
+  }
+  function openAddLocation(){ addLocOverlay.classList.add('open'); addLocOverlay.setAttribute('aria-hidden','false'); }
+  function closeAddLocation(){ addLocOverlay.classList.remove('open'); addLocOverlay.setAttribute('aria-hidden','true'); }
 
-  // 3) Keep the “Available times” box visible and showing the same person
-  //    (we DO NOT clear who is selected for availability)
-  staffAvailability.style.display = 'block';
-  renderAvailability();                     // refresh the calendar/times on screen
-});
+  function renderSelectedLocation(){
+    if(!state.selectedLocation || state.locationMode === 'virtual'){
+      selectedLocationEl.textContent = '';
+      selectedLocationEl.classList.add('hidden');
+      return;
+    }
+    selectedLocationEl.textContent = state.selectedLocation;
+    selectedLocationEl.classList.remove('hidden');
+  }
+  function setSelectedLocation(addr){ state.selectedLocation = addr; renderSelectedLocation(); }
 
+  function syncNameAcross(){
+    document.getElementById('meetingName_s3').value = state.meetingName || '';
+    document.getElementById('meetingName_s4').value = state.meetingName || '';
+    document.getElementById('meetingName_s5').value = state.meetingName || '';
+  }
+  function syncStatusAcross(){
+    document.getElementById('statusValue').textContent = state.status;
+    document.getElementById('statusValue_s3').textContent = state.status;
+    document.getElementById('statusValue_s4').textContent = state.status;
+    document.getElementById('statusValue_s5').textContent = state.status;
+  }
+  function syncStageAcross(){
+    document.getElementById('stageValue').textContent = state.stage;
+    document.getElementById('stageValue_s3').textContent = state.stage;
+    document.getElementById('stageValue_s4').textContent = state.stage;
+    document.getElementById('stageValue_s5').textContent = state.stage;
+  }
 
+  function setupMirrors(){
+    // Step 3 menus
+    mountInlineMenu(document.getElementById('statusValue_s3'), document.getElementById('statusMenu_s3'), STATUS_OPTIONS, (v)=>{ state.status=v; syncStatusAcross(); });
+    mountInlineMenu(document.getElementById('stageValue_s3'),  document.getElementById('stageMenu_s3'),  STAGE_OPTIONS,  (v)=>{ state.stage=v;  syncStageAcross(); });
+    // Step 4 menus
+    mountInlineMenu(document.getElementById('statusValue_s4'), document.getElementById('statusMenu_s4'), STATUS_OPTIONS, (v)=>{ state.status=v; syncStatusAcross(); });
+    mountInlineMenu(document.getElementById('stageValue_s4'),  document.getElementById('stageMenu_s4'),  STAGE_OPTIONS,  (v)=>{ state.stage=v;  syncStageAcross(); });
+    // Step 5 menus
+    mountInlineMenu(document.getElementById('statusValue_s5'), document.getElementById('statusMenu_s5'), STATUS_OPTIONS, (v)=>{ state.status=v; syncStatusAcross(); });
+    mountInlineMenu(document.getElementById('stageValue_s5'),  document.getElementById('stageMenu_s5'),  STAGE_OPTIONS,  (v)=>{ state.stage=v;  syncStageAcross(); });
 
-    document.getElementById('scheduleBtn').addEventListener('click', ()=> alert('Scheduled! (mock)'));
-    document.getElementById('saveDraftBtn').addEventListener('click', ()=> alert('Saved draft. (mock)'));
-    document.getElementById('closeModal').addEventListener('click', ()=> modal.classList.remove('open'));
-
-    renderInviteeList();
-    renderStaffList();
+    document.getElementById('meetingName_s3').addEventListener('input', e => { state.meetingName = e.target.value; document.getElementById('meetingName').value = e.target.value; syncNameAcross(); });
+    document.getElementById('meetingName_s4').addEventListener('input', e => { state.meetingName = e.target.value; document.getElementById('meetingName').value = e.target.value; syncNameAcross(); });
+    document.getElementById('meetingName_s5').addEventListener('input', e => { state.meetingName = e.target.value; document.getElementById('meetingName').value = e.target.value; syncNameAcross(); });
   }
 
   function switchSub(which){
     const inv = which==='invitees';
-    tabInvitees.setAttribute('aria-selected',inv);
-    tabStaff.setAttribute('aria-selected',!inv);
-    panelInvitees.classList.toggle('active',inv);
-    panelStaff.classList.toggle('active',!inv);
+    document.getElementById('tabInvitees').setAttribute('aria-selected',inv);
+    document.getElementById('tabStaff').setAttribute('aria-selected',!inv);
+    document.getElementById('panelInvitees').classList.toggle('active',inv);
+    document.getElementById('panelStaff').classList.toggle('active',!inv);
   }
 
   // Staff picker -> show availability
@@ -712,7 +1142,7 @@ function renderSuggested(){
   }
 
   function renderCalSkeleton(container){
-    container.innerHTML = ''; // ensure clean before header row
+    container.innerHTML = '';
     for(let i=0;i<7;i++){
       const h = document.createElement('div');
       h.className = 'cal-dow';
@@ -721,11 +1151,19 @@ function renderSuggested(){
     }
   }
 
+  // AVATAR
+  function avatarHTML(person){
+    if(person.avatar){
+      return `<span class="avatar"><img src="${person.avatar}" alt=""></span>`;
+    }
+    return `<span class="avatar" aria-hidden="true">${initialsFromName(displayNameNameFirst(person.name||''))}</span>`;
+  }
+
   // Invitees & Staff lists
   function addInvitee(contact){
     if(!contact) return;
     if(state.invitees.some(i=>i.id===contact.id)) return;
-    state.invitees.push({ id: contact.id, name: contact.name, displayName: displayNameNameFirst(contact.name), email: contact.email });
+    state.invitees.push({ id: contact.id, name: contact.name, displayName: displayNameNameFirst(contact.name), email: contact.email, phone: contact.phone || '', profileUrl: contact.profileUrl || '#', avatar: contact.avatar || '' });
     renderInviteeList();
   }
   function removeInvitee(id){
@@ -742,14 +1180,22 @@ function renderSuggested(){
       return;
     }
     state.invitees.forEach(i=>{
-      const row=document.createElement('div'); row.className='list-item';
+      const row=document.createElement('div'); 
+      row.className='person-card';
       row.innerHTML = `
-        <div style="min-width:0;flex:1">
-          <strong style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.displayName || displayNameNameFirst(i.name)}</strong>
-          <div class="hint" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.email}</div>
+        <div class="person-left">
+          ${avatarHTML(i)}
+          <div class="meta">
+            <div class="name-row">
+              <strong>${i.displayName || displayNameNameFirst(i.name)}</strong>
+              <button class="remove-x" title="Remove" data-remove-invitee="${i.id}">×</button>
+            </div>
+            <div class="subline">${i.email}</div>
+            ${i.phone ? `<div class="subline">${i.phone}</div>` : ``}
+          </div>
         </div>
-        <div class="row" style="flex:0 0 auto;gap:8px">
-          <button class="btn" data-remove-invitee="${i.id}">Remove</button>
+        <div class="person-right">
+          <a class="view-link" href="${i.profileUrl || '#'}" target="_blank" rel="noopener">View Profile</a>
         </div>
       `;
       inviteeList.appendChild(row);
@@ -763,18 +1209,24 @@ function renderSuggested(){
       const empty=document.createElement('div'); empty.className='hint'; empty.textContent='No staff selected.'; staffList.appendChild(empty); return;
     }
     state.staffOnMeeting.forEach(s=>{
-      const u = internalUsers.find(x=>x.id===s.id) || { name:'Unknown' };
-      const row = document.createElement('div'); row.className='list-item';
+      const u = internalUsers.find(x=>x.id===s.id) || { name:'Unknown', title:'', email:'', phone:'', profileUrl:'#', avatar:'' };
+      const row = document.createElement('div'); 
+      row.className='person-card';
       row.innerHTML = `
-        <div style="min-width:0;flex:1">
-          <strong style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.name}</strong>
-          <div class="hint" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.title||''}</div>
+        <div class="person-left">
+          ${avatarHTML(u)}
+          <div class="meta">
+            <div class="name-row">
+              <strong>${u.name}</strong>
+              <button class="remove-x" title="Remove" data-remove-staff="${s.id}">×</button>
+            </div>
+            <div class="subline">${u.title || ''}</div>
+            <div class="subline">${u.email || ''}</div>
+            ${u.phone ? `<div class="subline">${u.phone}</div>` : ``}
+          </div>
         </div>
-        <div class="row" style="flex:0 0 auto;gap:8px">
-          <select data-staff-role="${s.id}">
-            ${meetingRoles.map(r=>`<option ${r.toLowerCase()===s.role.toLowerCase()?'selected':''}>${r.charAt(0).toUpperCase()+r.slice(1)}</option>`).join('')}
-          </select>
-          <button class="btn" data-remove-staff="${s.id}">Remove</button>
+        <div class="person-right">
+          <a class="view-link" href="${u.profileUrl || '#'}" target="_blank" rel="noopener">View Profile</a>
         </div>
       `;
       staffList.appendChild(row);
@@ -785,15 +1237,174 @@ function renderSuggested(){
       if(state.staff===id){ state.staff=null; attendingStaff.value=''; staffAvailability.style.display='none'; }
       renderStaffList(); renderAvailability();
     }));
-    staffList.querySelectorAll('[data-staff-role]').forEach(sel=> sel.addEventListener('change',()=>{
-      const id=sel.getAttribute('data-staff-role');
-      const st=state.staffOnMeeting.find(x=>x.id===id);
-      if(st) st.role=sel.value;
-    }));
   }
 
-  // Init
+  // Step Nav
+  function goNext(){
+    step2Error.style.display = 'none';
+
+    if(state.step===2){
+      // Require at least one staff (text still mentions invitee+staff; keeping logic as requested change list didn't include)
+      if(state.staffOnMeeting.length === 0){
+        step2Error.style.display = 'block';
+        return;
+      }
+      state.meetingName = document.getElementById('meetingName').value;
+      syncNameAcross();
+      state.step = 3;
+    } else if(state.step===3){
+      state.descriptions.short = document.getElementById('shortDesc').value;
+      state.descriptions.long  = document.getElementById('longDesc').innerHTML;
+      state.descriptions.notes = document.getElementById('notesDesc').innerHTML;
+      state.step = 4;
+    } else if(state.step===4){
+      state.step = 5;
+    }
+    updateStepUI();
+  }
+  function goBack(){
+    step2Error.style.display = 'none';
+    if(state.step>2){ state.step--; updateStepUI(); }
+  }
+
+  function updateStepUI(){
+    step2Panel.classList.toggle('hidden', state.step!==2);
+    step3Panel.classList.toggle('hidden', state.step!==3);
+    step4Panel.classList.toggle('hidden', state.step!==4);
+    step5Panel.classList.toggle('hidden', state.step!==5);
+
+    dlgTitle.textContent =
+      state.step===2 ? 'Step 2' :
+      state.step===3 ? 'Step 3 – About This Meeting' :
+      state.step===4 ? 'Step 4 – Agenda' :
+      'Step 5 – Select Location';
+
+    backBtn.classList.toggle('hidden', state.step===2);
+    nextBtn.classList.toggle('hidden', state.step===5);
+    scheduleBtn.classList.toggle('hidden', state.step!==5);
+  }
+
+  // Agenda
+  function renderAgenda(){
+    agendaList.innerHTML = '';
+    state.agendas.forEach((a)=>{
+      const item = document.createElement('div');
+      item.className = 'agenda-item';
+      item.setAttribute('draggable','true');
+      item.dataset.id = a.id;
+
+      item.innerHTML = `
+        <div class="agenda-handle" aria-label="Drag to reorder">
+          <div class="dots">${'<span></span>'.repeat(6)}</div>
+        </div>
+        <div class="agenda-main">
+          <div class="view">
+            <div class="agenda-title">${a.title}</div>
+            <div class="agenda-sub">Duration: ${a.duration} Minutes</div>
+            <div class="agenda-sub">${a.desc}</div>
+          </div>
+          <div class="edit">
+            <div class="edit-row">
+              <input class="input" data-edit-title value="${a.title}" placeholder="Agenda name" />
+              <input class="input inline-num" type="number" min="0" data-edit-duration value="${a.duration}" />
+            </div>
+            <div class="edit-row">
+              <input class="input" data-edit-desc value="${a.desc}" placeholder="Short description" />
+            </div>
+          </div>
+        </div>
+        <div class="agenda-actions">
+          <button class="icon-btn" title="Edit" data-edit>
+            <span class="icon">✏️</span>
+          </button>
+          <button class="icon-btn" title="Remove" data-remove>
+            <span class="icon">✖</span>
+          </button>
+        </div>
+      `;
+
+      item.querySelector('[data-edit]').addEventListener('click', ()=>{
+        const editing = item.classList.toggle('agenda-editing');
+        if(!editing){
+          const title = item.querySelector('[data-edit-title]').value.trim() || 'Untitled';
+          const dur   = parseInt(item.querySelector('[data-edit-duration]').value||0,10);
+          const desc  = item.querySelector('[data-edit-desc]').value.trim();
+          a.title = title; a.duration = isNaN(dur)?0:dur; a.desc = desc;
+          renderAgenda();
+        }
+      });
+
+      item.querySelector('[data-remove]').addEventListener('click', ()=>{
+        state.agendas = state.agendas.filter(x=>x.id!==a.id);
+        renderAgenda();
+      });
+
+      item.addEventListener('dragstart', (e)=>{
+        e.dataTransfer.setData('text/plain', a.id);
+        item.style.opacity = .5;
+      });
+      item.addEventListener('dragend', ()=>{ item.style.opacity = 1; });
+      item.addEventListener('dragover', (e)=>{ e.preventDefault(); item.style.borderColor = '#cfe0ff'; });
+      item.addEventListener('dragleave', ()=>{ item.style.borderColor = 'var(--line)'; });
+      item.addEventListener('drop', (e)=>{
+        e.preventDefault();
+        item.style.borderColor = 'var(--line)';
+        const draggedId = e.dataTransfer.getData('text/plain');
+        if(draggedId===a.id) return;
+        const from = state.agendas.findIndex(x=>x.id===draggedId);
+        const to   = state.agendas.findIndex(x=>x.id===a.id);
+        const [moved] = state.agendas.splice(from,1);
+        state.agendas.splice(to,0,moved);
+        renderAgenda();
+      });
+
+      agendaList.appendChild(item);
+    });
+  }
+
+  // Step 5 Location
+  function setLocationMode(mode){
+    state.locationMode = mode;
+    const isInPerson = mode==='inperson';
+    locInPerson.setAttribute('aria-selected', isInPerson);
+    locVirtual.setAttribute('aria-selected', !isInPerson);
+    inPersonPanel.classList.toggle('hidden', !isInPerson);
+    virtualPanel.classList.toggle('hidden', isInPerson);
+    renderSelectedLocation();
+  }
+
+  function renderRecommended(){
+    recList.innerHTML = state.recommended.map(addr=>`
+      <div class="rec-item">
+        <div>${addr}</div>
+        <button class="btn" data-choose-loc="${addr.replace(/"/g,'&quot;')}">Use</button>
+      </div>
+    `).join('');
+  }
+
+  recList.addEventListener('click', (e)=>{
+    const chosen = e.target?.getAttribute?.('data-choose-loc');
+    if(!chosen) return;
+    setSelectedLocation(chosen);
+  });
+
+  zoomUrl.addEventListener('input', e=> state.zoomUrl = e.target.value );
+
+  function initPanelsSync(){ syncNameAcross(); syncStatusAcross(); syncStageAcross(); }
+
+  createdByName.textContent = loggedInUser.name;
   init();
+  initPanelsSync();
+
+  function renderCalSkeleton(container){
+    container.innerHTML = '';
+    for(let i=0;i<7;i++){
+      const h = document.createElement('div');
+      h.className = 'cal-dow';
+      h.textContent = dayNameShort(i);
+      container.appendChild(h);
+    }
+  }
 </script>
 </body>
 </html>
