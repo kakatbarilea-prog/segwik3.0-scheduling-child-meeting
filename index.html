@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Segwik – Schedule Child Meeting (On‑Brand Modal)</title>
+<title>Segwik – Schedule Child Meeting (On-Brand Modal)</title>
 <style>
   :root{
     --bg:#f6f8fb; --card:#ffffff; --ink:#243048; --muted:#667085; --line:#e6ebf2; --accent:#0F2D56; --ok:#0b62ff;
@@ -24,74 +24,52 @@
   /* Modal */
   .modal{position:fixed;inset:0;background:rgba(15,23,42,.35);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
   .modal.open{display:flex}
-  .dialog {
-  width:min(980px,98vw);
-  max-height:90vh;          /* limits popup height */
-  overflow:hidden;          /* hides outer overflow */
-  background:#fff;
-  border-radius:14px;
-  border:1px solid #e7edf5;
-  box-shadow:0 12px 50px rgba(0,0,0,.15);
-  display:flex;
-  flex-direction:column;
-}
-
-.panel {
-  padding:16px;
-  flex:1;                   /* fills the vertical space */
-  overflow-y:auto;          /* enables inner scrollbar */
-}
+  .dialog{
+    width:min(980px,98vw);
+    max-height:90vh;
+    overflow:hidden;
+    background:#fff;
+    border-radius:14px;
+    border:1px solid #e7edf5;
+    box-shadow:0 12px 50px rgba(0,0,0,.15);
+    display:flex;
+    flex-direction:column;
+  }
+  .panel{
+    padding:16px;
+    flex:1;
+    overflow-y:auto;
+  }
 
   .dialog-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
   .dialog-head h3{margin:0;font-size:18px}
   .created-pill{margin-left:auto;background:var(--pill);color:var(--pill-ink);border:1px solid #cfe0ff;padding:6px 10px;border-radius:999px;font-size:12px}
 
-  /* Content */
-/* Inline select (click text -> menu) */
-.inline-select{position:relative;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+  /* Inline select (click text -> menu) */
+  .inline-select{position:relative;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+  .inline-label{font-size:14px;line-height:1.2;color:#1f2a44;font-weight:600}
+  .inline-value{
+    background:transparent;border:none;padding:0;margin:0;appearance:none;cursor:pointer;
+    font-weight:700;color:var(--ok);font-size:14px;line-height:1.2;
+  }
+  .inline-value:hover{ text-decoration:underline; }
+  .inline-value:focus-visible{ outline:none; text-decoration:underline; }
+  .inline-menu{position:absolute;z-index:3;top:calc(100% + 6px);left:0;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.08);display:none;overflow:auto;max-height:240px}
+  .inline-menu.open{display:block}
+  .inline-option{padding:10px 12px;cursor:pointer;border-bottom:1px solid #f2f5fa}
+  .inline-option:last-child{border-bottom:0}
+  .inline-option:hover{background:#f8fafc}
 
-.inline-label{font-size:14px;line-height:1.2;color:#1f2a44;font-weight:600}
-
-.inline-value{
-  background:transparent;
-  border:none;
-  padding:0;
-  margin:0;
-  appearance:none;
-  cursor:pointer;
-  font-weight:700;
-  color:var(--ok);
-  font-size:14px;
-  line-height:1.2;      /* match label */
-}
-
-
-
-.inline-value:hover{
-  text-decoration:underline;
-}
-.inline-value:focus-visible{
-  outline:none;
-  text-decoration:underline;
-}
-
-.inline-menu{position:absolute;z-index:3;top:calc(100% + 6px);left:0;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.08);display:none;overflow:auto;max-height:240px}
-.inline-menu.open{display:block}
-.inline-option{padding:10px 12px;cursor:pointer;border-bottom:1px solid #f2f5fa}
-.inline-option:last-child{border-bottom:0}
-.inline-option:hover{background:#f8fafc}
-
-/* Time bar row */
-.timebar{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#f4f7fb;border:1px solid var(--line);border-radius:12px;padding:12px}
-.timebar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.timebar .input-time{height:46px;border:1px solid #e7edf5;border-radius:8px;padding:0 10px;font-size:15px}
-.timebar-sep{margin:0 6px;color:var(--muted);font-weight:700}
-.timebar-right{display:flex;align-items:center;gap:8px}
-.timebar-right .inline-label{font-weight:700}
-
+  /* Time bar row */
+  .timebar{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#f4f7fb;border:1px solid var(--line);border-radius:12px;padding:12px}
+  .timebar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .timebar .input-time{height:46px;border:1px solid #e7edf5;border-radius:8px;padding:0 10px;font-size:15px}
+  .timebar-sep{margin:0 6px;color:var(--muted);font-weight:700}
+  .timebar-right{display:flex;align-items:center;gap:8px}
+  .timebar-right .inline-label{font-weight:700}
 
   .grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px}
-  .grid2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} /* equal width columns now */
   .row{display:flex;gap:12px;flex-wrap:wrap}
   .field{display:flex;flex-direction:column;gap:8px}
   label{font-size:14px;color:#1f2a44;font-weight:600}
@@ -107,39 +85,59 @@
 
   /* People tabs (Invitees / Staff) */
   .subtabs{
-  display:inline-flex;
-  align-items:center;
-  gap:2px;
-  padding:4px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#eef4fb;              /* soft blue bar */
-  margin-top:6px;
-}
-.subtab{
-  background:transparent;
-  border:none;
-  border-radius:10px;
-  padding:8px 14px;
-  font-weight:600;
-  color:var(--ink);
-  cursor:pointer;
-}
-.subtab[aria-selected="true"]{
-  background:#fff;
-  box-shadow:0 1px 2px rgba(16,24,40,.06);
-  border:1px solid var(--line);
-}
+    display:inline-flex;align-items:center;gap:2px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#eef4fb;margin-top:6px;
+  }
+  .subtab{background:transparent;border:none;border-radius:10px;padding:8px 14px;font-weight:600;color:#1f2a44;cursor:pointer}
+  .subtab[aria-selected="true"]{background:#fff;box-shadow:0 1px 2px rgba(16,24,40,.06);border:1px solid var(--line)}
 
   .subpanel{padding:12px;display:none}
   .subpanel.active{display:block}
   .list{display:flex;flex-direction:column;gap:8px}
   .list-item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}
 
+  /* Suggested contacts “one big box” */
+  .suggested-box{
+    background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto;
+  }
+  .suggested-row{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px;border:1px solid #eef2f7;border-radius:8px;background:#fafcff;
+  }
+  .suggested-row .meta{min-width:0}
+  .suggested-row .name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .suggested-row .email{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
   /* Availability (inside Staff tab) */
   .avail{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}
   .avail-head{display:flex;align-items:center;justify-content:space-between}
-  .avail-days{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:12px}
+
+  /* Reference-only look for availability box */
+  .avail.reference{
+    background:#f7f8fb;            /* soft gray panel */
+    border-style:dashed;            /* visual separation from form */
+    position:relative;
+  }
+  .ref-banner{
+    display:flex; align-items:center; gap:8px;
+    background:#eef1f6;
+    border:1px solid #dfe4ee;
+    color:#475467;
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:700;
+    margin:8px 0 12px 0;
+  }
+  .ref-banner svg{ flex:0 0 auto }
+
+  /* Slight card lift for the two inner panels to keep them readable */
+  .cal, .time-panel{
+    background:#fff;
+    box-shadow:0 1px 0 rgba(16,24,40,.02);
+  }
+
+  .avail-head strong{ color:#101828; }
+  .avail-muted{ color:#667085; }
+
   .day{border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;background:#fff}
   .day h4{margin:0;font-size:12px;color:var(--muted)}
   .slot{display:block;width:100%;background:#f8fafc;border:1px solid #e7edf5;padding:8px;text-align:center;border-radius:8px;cursor:pointer;font-size:12px}
@@ -154,78 +152,44 @@
 
   @media (max-width:940px){.grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.avail-days{grid-template-columns:repeat(2,1fr)}}
 
-  .list-item{ align-items:center; }
-.list-item .row{ flex-wrap:nowrap; gap:8px; }
-.list-item select{ width:auto; min-width:150px; } /* compact the dropdown */
-.list-item .btn{ padding:8px 10px; }              /* slightly tighter button */
-@media (max-width:560px){
-  .list-item .row{ flex-wrap:wrap; }              /* only wrap on very small screens */
-}
-/* ===== Suggested Availability (Calendly-style) ===== */
-.avail {
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:12px;
-  margin-top:10px;
-}
+  .list-item .row{ flex-wrap:nowrap; gap:8px; }
+  .list-item .btn{ padding:8px 10px; }
 
-.avail-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.avail-title{display:flex;align-items:center;gap:10px}
-.avail-muted{color:var(--muted);font-size:12px}
+  /* ===== Suggested Availability (Calendly-style) ===== */
+  .avail-head{margin-bottom:8px}
+  .avail-title{display:flex;align-items:center;gap:10px}
+  .avail-muted{color:var(--muted);font-size:12px}
 
-.cal-wrap{display:grid;grid-template-columns: 320px 1fr; gap:20px; align-items:start}
-@media (max-width:860px){ .cal-wrap{grid-template-columns:1fr} }
+  .cal-wrap{display:grid;grid-template-columns: 320px 1fr; gap:20px; align-items:start}
+  @media (max-width:860px){ .cal-wrap{grid-template-columns:1fr} }
 
-.cal{
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#fff;
-  overflow:hidden;
-}
-.cal-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 12px;border-bottom:1px solid var(--line)
-}
-.cal-nav{display:flex;align-items:center;gap:8px}
-.cal-nav .chip{padding:6px 10px}
-.cal-month{font-weight:700}
+  .cal{
+    border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;
+  }
+  .cal-head{
+    display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line)
+  }
+  .cal-nav{display:flex;align-items:center;gap:8px}
+  .cal-nav .chip{padding:6px 10px}
+  .cal-month{font-weight:700}
 
-.cal-grid{
-  display:grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap:6px;
-  padding:12px;
-}
-.cal-dow{font-size:11px;color:var(--muted);text-transform:uppercase;text-align:center}
-.cal-day{
-  height:40px; display:grid; place-items:center; border-radius:10px; cursor:pointer;
-  border:1px solid transparent; color:var(--ink); background:#fff;
-}
-.cal-day:hover{ border-color:#dfe6f3; background:#f7faff }
-.cal-day.out{ color:#a7b1c2; background:#fafbfe }
-.cal-day.today{ outline:2px solid #e0ebff }
-.cal-day.selected{ background:#eaf1ff; border-color:#cfe0ff; color:#0b62ff; font-weight:700 }
+  .cal-grid{display:grid;grid-template-columns: repeat(7, 1fr);gap:6px;padding:12px}
+  .cal-dow{font-size:11px;color:#667085;text-transform:uppercase;text-align:center}
+  .cal-day{
+    height:40px;display:grid;place-items:center;border-radius:10px;cursor:pointer;border:1px solid transparent;color:var(--ink);background:#fff;
+  }
+  .cal-day:hover{ border-color:#dfe6f3; background:#f7faff }
+  .cal-day.out{ color:#a7b1c2; background:#fafbfe }
+  .cal-day.today{ outline:2px solid #e0ebff }
+  .cal-day.selected{ background:#eaf1ff; border-color:#cfe0ff; color:#0b62ff; font-weight:700 }
 
-.time-panel{
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#fff;
-  padding:12px;
-  min-height:260px;
-}
-.time-panel h4{margin:0 0 8px 0}
-.time-list{display:flex;flex-direction:column;gap:10px}
-.time-row {
-  border: none;
-  background: transparent;
-  padding: 4px 0;
-  font-weight: 600;
-  color: #0b62ff;
-  cursor: default; /* optional: removes pointer look */
-}
-
-.time-empty{color:var(--muted);font-size:14px;padding:12px}
-
+  .time-panel{
+    border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px;min-height:260px;
+  }
+  .time-panel h4{margin:0 0 8px 0}
+  .time-list{display:flex;flex-direction:column;gap:10px}
+  .time-row{border:none;background:transparent;padding:4px 0;font-weight:600;color:#0b62ff}
+  .time-empty{color:var(--muted);font-size:14px;padding:12px}
 </style>
 </head>
 <body>
@@ -236,7 +200,7 @@
       <button class="save" id="openModal">+ Schedule Meeting</button>
     </div>
 
-    <!-- On‑brand modal -->
+    <!-- On-brand modal -->
     <div class="modal" id="modal">
       <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
         <div class="dialog-head">
@@ -251,41 +215,41 @@
               <label for="meetingName">Meeting name</label>
               <input class="input" id="meetingName" />
             </div>
-            <div class="field">
-  <div class="inline-select" id="statusSelect">
-    <span class="inline-label">Meeting Status:</span>
-    <button type="button" class="inline-value" id="statusValue">Active</button>
-    <div class="inline-menu" id="statusMenu"></div>
-  </div>
-</div>
 
             <div class="field">
-  <div class="inline-select" id="stageSelect">
-    <span class="inline-label">Meeting Stage:</span>
-    <button type="button" class="inline-value" id="stageValue">Scheduled</button>
-    <div class="inline-menu" id="stageMenu"></div>
-  </div>
-</div>
+              <div class="inline-select" id="statusSelect">
+                <span class="inline-label">Meeting Status:</span>
+                <button type="button" class="inline-value" id="statusValue">Active</button>
+                <div class="inline-menu" id="statusMenu"></div>
+              </div>
+            </div>
 
+            <div class="field">
+              <div class="inline-select" id="stageSelect">
+                <span class="inline-label">Meeting Stage:</span>
+                <button type="button" class="inline-value" id="stageValue">Scheduled</button>
+                <div class="inline-menu" id="stageMenu"></div>
+              </div>
+            </div>
           </div>
 
-          <!-- Row 2: Start/End + Timezone in one highlighted row -->
-<div class="timebar" style="margin-top:12px">
-  <div class="timebar-left">
-    <input type="date" class="input-time" id="startDate">
-    <input type="time" class="input-time" id="startTime" step="900">
-    <span class="timebar-sep">to</span>
-    <input type="date" class="input-time" id="endDate">
-    <input type="time" class="input-time" id="endTime" step="900">
-  </div>
-  <div class="timebar-right">
-    <span class="inline-label">Timezone:</span>
-    <div class="inline-select" id="tzSelect">
-      <button type="button" class="inline-value" id="tzValue">America/New_York</button>
-      <div class="inline-menu" id="tzMenu"></div>
-    </div>
-  </div>
-</div>
+          <!-- Row 2: Start/End + Timezone -->
+          <div class="timebar" style="margin-top:12px">
+            <div class="timebar-left">
+              <input type="date" class="input-time" id="startDate">
+              <input type="time" class="input-time" id="startTime" step="900">
+              <span class="timebar-sep">to</span>
+              <input type="date" class="input-time" id="endDate">
+              <input type="time" class="input-time" id="endTime" step="900">
+            </div>
+            <div class="timebar-right">
+              <span class="inline-label">Timezone:</span>
+              <div class="inline-select" id="tzSelect">
+                <button type="button" class="inline-value" id="tzValue">America/New_York</button>
+                <div class="inline-menu" id="tzMenu"></div>
+              </div>
+            </div>
+          </div>
 
           <!-- Row 3: Subtabs Invitees | Staff -->
           <div class="subtabs" role="tablist" aria-label="Participant setup" style="margin-top:16px">
@@ -296,20 +260,25 @@
           <!-- Invitees Panel -->
           <div id="panelInvitees" class="subpanel active" role="tabpanel" aria-labelledby="tabInvitees">
             <div class="grid2">
+              <!-- LEFT: Contact picker -->
               <div class="field">
                 <label for="customerPicker">Contacts</label>
                 <div class="row">
-                  <select id="customerPicker" style="flex:2"></select>
-                  <select id="inviteeRole" style="flex:1"></select>
+                  <select id="customerPicker" style="flex:1"></select>
                   <button class="btn" id="addInviteeBtn" style="flex:0 0 auto">Add</button>
                 </div>
-                <div class="hint"><a href="#" id="addContactLink" style="color:#356aff;text-decoration:underline">+Add Contact</a>  </div>
+                <div class="hint">
+                  <a href="#" id="addContactLink" style="color:#356aff;text-decoration:underline">+Add Contact</a>
+                </div>
               </div>
+
+              <!-- RIGHT: Suggested contacts (one big box) -->
               <div class="field">
                 <label>Suggested contacts</label>
-                <div class="list" id="suggestedContacts"></div>
+                <div class="suggested-box" id="suggestedContacts"></div>
               </div>
             </div>
+
             <div style="height:8px"></div>
             <label>Invitee list</label>
             <div class="list" id="inviteeList"></div>
@@ -319,90 +288,93 @@
           <div id="panelStaff" class="subpanel" role="tabpanel" aria-labelledby="tabStaff">
             <div class="field">
               <label for="attendingStaff">(Internal Users)</label>
-             <div class="row">
-  <select id="attendingStaff" style="flex:2"></select>
-  <select id="staffRole" style="flex:1"></select>
-  <button class="btn" id="addStaffBtn" style="flex:0 0 auto">Add</button>
-</div>
-
-              <div class="hint">Choose attending staff and role. Availability appears below once selected.</div>
+              <div class="row">
+                <select id="attendingStaff" style="flex:2"></select>
+                <select id="staffRole" style="flex:1"></select>
+                <button class="btn" id="addStaffBtn" style="flex:0 0 auto">Add</button>
+              </div>
             </div>
 
             <div class="list" id="staffList" style="margin-top:8px"></div>
 
-            <!-- Availability lives here and appears when staff selected -->
-            <div class="avail" id="staffAvailability" style="display:none">
-  <div class="avail-head">
-    <div class="avail-title">
-      <strong>Available times</strong>
-      <span class="avail-muted" id="availabilityHint">Select an Attending Staff to view availability.</span>
-    </div>
-    <div class="avail-muted">Reference only</div>
-  </div>
+            <!-- Availability lives here -->
+            <div class="avail reference" id="staffAvailability" style="display:none" role="note" aria-label="Reference availability">
+              <div class="avail-head">
+                <div class="avail-title">
+                  <strong>Available times</strong>
+                  <span class="avail-muted" id="availabilityHint">Select an Attending Staff to view availability.</span>
+                </div>
+                <div class="avail-muted"></div>
+              </div>
 
-  <div class="cal-wrap">
-    <!-- Calendar -->
-    <div class="cal">
-      <div class="cal-head">
-        <div class="cal-nav">
-          <button class="chip" id="calPrev">◀</button>
-          <button class="chip" id="calToday">Today</button>
-          <button class="chip" id="calNext">▶</button>
-        </div>
-        <div class="cal-month" id="calMonthLabel">Month YYYY</div>
-      </div>
-      <div class="cal-grid" id="calGrid">
-        <!-- DOW header -->
-      </div>
-    </div>
+              <div class="ref-banner" aria-hidden="true" title="This panel does not change your meeting times">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8"  x2="12" y2="8"></line>
+                </svg>
+                Please check a teammate’s calendar before you choose your own start/end above.
+              </div>
 
-    <!-- Times list -->
-    <div class="time-panel">
-      <h4 id="timePanelTitle">Times</h4>
-      <div class="time-list" id="timeList"></div>
-    </div>
-  </div>
-</div>
+              <div class="cal-wrap">
+                <!-- Calendar -->
+                <div class="cal">
+                  <div class="cal-head">
+                    <div class="cal-nav">
+                      <button class="chip" id="calPrev">◀</button>
+                      <button class="chip" id="calToday">Today</button>
+                      <button class="chip" id="calNext">▶</button>
+                    </div>
+                    <div class="cal-month" id="calMonthLabel">Month YYYY</div>
+                  </div>
+                  <div class="cal-grid" id="calGrid">
+                    <!-- DOW + days injected by JS -->
+                  </div>
+                </div>
 
-          </div>
-        </div>
+                <!-- Times list -->
+                <div class="time-panel">
+                  <h4 id="timePanelTitle">Times</h4>
+                  <div class="time-list" id="timeList"></div>
+                </div>
+              </div>
+            </div> <!-- /avail -->
+          </div> <!-- /panelStaff -->
+        </div> <!-- /panel -->
 
         <div class="actions">
           <button class="btn ghost" id="closeModal">Cancel</button>
           <button class="btn" id="saveDraftBtn">Save as Draft</button>
           <button class="btn primary" id="scheduleBtn">Schedule Meeting</button>
         </div>
-      </div>
-    </div>
-  </div>
+      </div> <!-- /dialog -->
+    </div> <!-- /modal -->
+  </div> <!-- /wrap -->
 
 <script>
   // ===== Dummy Data =====
-  // Inline menu options
-const STATUS_OPTIONS = ['Draft','Active'];
-const STAGE_OPTIONS  = ['Scheduled','Confirmed','Cancelled','Rescheduled','Updated'];
-const TZ_OPTIONS     = [
-  'America/New_York','America/Chicago','America/Denver','America/Los_Angeles','UTC'
-];
+  const STATUS_OPTIONS = ['Draft','Active'];
+  const STAGE_OPTIONS  = ['Scheduled','Confirmed','Cancelled','Rescheduled','Updated'];
+  const TZ_OPTIONS     = ['America/New_York','America/Chicago','America/Denver','America/Los_Angeles','UTC'];
 
-// Build a click-to-open menu
-function mountInlineMenu(buttonEl, menuEl, options, onChoose){
-  menuEl.innerHTML = options.map(opt=>`<div class="inline-option" data-val="${opt}">${opt}</div>`).join('');
-  buttonEl.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    menuEl.classList.toggle('open');
-  });
-  menuEl.addEventListener('click', (e)=>{
-    const val = e.target?.getAttribute?.('data-val');
-    if(!val) return;
-    onChoose(val);
-    menuEl.classList.remove('open');
-  });
-  document.addEventListener('click', ()=> menuEl.classList.remove('open'));
-}
+  function mountInlineMenu(buttonEl, menuEl, options, onChoose){
+    menuEl.innerHTML = options.map(opt=>`<div class="inline-option" data-val="${opt}">${opt}</div>`).join('');
+    buttonEl.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      menuEl.classList.toggle('open');
+    });
+    menuEl.addEventListener('click', (e)=>{
+      const val = e.target?.getAttribute?.('data-val');
+      if(!val) return;
+      onChoose(val);
+      menuEl.classList.remove('open');
+    });
+    document.addEventListener('click', ()=> menuEl.classList.remove('open'));
+  }
 
   const loggedInUser = { id: 'u-100', name: 'Alex Johnson', email: 'alex@segwik.example' };
-  const meetingRoles = ['attendee','guest','special guest','host','sponsor','client','colleague','member','potential ambassador','invitee','board member'];
+  const meetingRoles = ['attendee','guest','special guest','host','sponsor','client','colleague','member','potential ambassador','invitee','board member']; // used for STAFF only
   const internalUsers = [
     { id:'u-101', name:'Priya Patel', title:'Account Executive', tz:'America/New_York',
       busy:[ { start: off(0,13,0), end: off(0,14,0) }, { start: off(1,10,30), end: off(1,11,30) }, { start: off(3,15,0), end: off(3,16,0) } ],
@@ -428,110 +400,71 @@ function mountInlineMenu(buttonEl, menuEl, options, onChoose){
 
   // ===== State =====
   const state = { status:'Active', stage:'Scheduled', timezone:'America/New_York', staff:null, weekOffset:0, invitees:[], staffOnMeeting:[] };
-  const defaultSlotMinutes = 30; // used for suggested times only (UI hides duration)
-state.refMonth = new Date();
-state.selectedCalDate = new Date();
+  const defaultSlotMinutes = 30;
+  state.refMonth = new Date();
+  state.selectedCalDate = new Date();
 
   // ===== Utilities =====
-  
-  function pad(n){return String(n).padStart(2,'0')} 
+  function pad(n){return String(n).padStart(2,'0')}
   function toISO(d){const y=d.getFullYear(),m=pad(d.getMonth()+1),dy=pad(d.getDate()),hh=pad(d.getHours()),mm=pad(d.getMinutes());return `${y}-${m}-${dy}T${hh}:${mm}`}
-  function parseISO(v){const [date,time]=v.split('T');const [y,m,dy]=date.split('-').map(Number);const [hh,mm]=time.split(':').map(Number);return new Date(y,m-1,dy,hh,mm)}
   function off(days,h=9,m=0){const d=new Date();d.setDate(d.getDate()+days);d.setHours(h,m,0,0);return d.toISOString()}
-  function overlaps(aS,aE,bS,bE){return aS<bE && bS<aE}
-  function startOfDayOffset(days){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+days);return d}
-  function fmtDay(d){return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})}
+  function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
+  function endOfMonth(d){ return new Date(d.getFullYear(), d.getMonth()+1, 0); }
+  function sameDay(a,b){ return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+  function formatMonthLabel(d){ return d.toLocaleDateString(undefined, { month:'long', year:'numeric' }); }
+  function dayNameShort(idx){ return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][idx]; }
   function fmtTime(d){return d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}
-  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
-
-function displayNameNameFirst(label){
-  // expects "Company – Person" or "Company — Person"
-  const parts = label.split(/—|–/).map(s=>s.trim());
-  if(parts.length === 2){
-    const [company, person] = parts;
-    return `${person} — ${company}`;
+  function displayNameNameFirst(label){
+    const parts = label.split(/—|–/).map(s=>s.trim());
+    if(parts.length === 2){ const [company, person] = parts; return `${person} — ${company}`; }
+    return label;
   }
-  return label;
-}
+  function startOfDay(d){ const x=new Date(d); x.setHours(0,0,0,0); return x; }
+  function dateAtTime(baseDate, hhmm){ const [hh,mm] = hhmm.split(':').map(Number); const d = new Date(baseDate); d.setHours(hh, mm, 0, 0); return d; }
 
-function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
-function endOfMonth(d){ return new Date(d.getFullYear(), d.getMonth()+1, 0); }
-function sameDay(a,b){ return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
-function formatMonthLabel(d){ return d.toLocaleDateString(undefined, { month:'long', year:'numeric' }); }
-function dayNameShort(idx){
-  // Sunday = 0
-  return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][idx];
-}
+  // Patterned dummy availability with 3 rotating sets; weekends off
+  const DUMMY_BY_USER = {
+    "u-101": {
+      anchor: new Date(2025,9,31), repeat: 4,
+      patterns: [
+        [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
+        [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
+        [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
+      ]
+    },
+    "u-102": {
+      anchor: new Date(2025,9,31), repeat: 4,
+      patterns: [
+        [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
+        [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
+        [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
+      ]
+    },
+    "u-103": {
+      anchor: new Date(2025,9,31), repeat: 4,
+      patterns: [
+        [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
+        [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
+        [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
+      ]
+    },
+  };
 
-/* --- Dummy-times utilities (per staff, 3 rotating sets + weekends off) --- */
-function startOfDay(d){ const x=new Date(d); x.setHours(0,0,0,0); return x; }
-function dateAtTime(baseDate, hhmm){
-  const [hh,mm] = hhmm.split(':').map(Number);
-  const d = new Date(baseDate); d.setHours(hh, mm, 0, 0); return d;
-}
+  function getDummySlotsForUserOnDate(userId, date){
+    const dow = date.getDay();
+    if (dow === 0 || dow === 6) return []; // weekends: none
+    const cfg = DUMMY_BY_USER[userId];
+    if (!cfg) return [];
+    const oneDay = 86400000;
+    const diffDays = Math.floor((startOfDay(date) - startOfDay(cfg.anchor)) / oneDay);
+    if (diffDays % cfg.repeat !== 0) return []; // only pattern dates
+    const patternIndex = Math.floor(diffDays / cfg.repeat) % cfg.patterns.length;
+    const chosen = cfg.patterns[patternIndex];
+    return chosen.map(([s,e]) => ({ start: dateAtTime(date,s), end: dateAtTime(date,e) }));
+  }
 
-/*
-  Pattern dates: start on Oct 31, 2025, then every 4 days (Nov 4, 8, 12, …).
-  On those pattern dates, rotate through THREE time sets.
-  Weekends (Sat/Sun) always show “No available times”.
-*/
-const DUMMY_BY_USER = {
-  "u-101": {
-    anchor: new Date(2025,9,31),  // Oct=9 (zero-based)
-    repeat: 4,
-    patterns: [
-      /* Set A (3 slots) */
-      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-      /* Set B (7 slots) */
-      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-      /* Set C (5 slots) */
-      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-    ]
-  },
-  "u-102": {
-    anchor: new Date(2025,9,31),
-    repeat: 4,
-    patterns: [
-      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-    ]
-  },
-  "u-103": {
-    anchor: new Date(2025,9,31),
-    repeat: 4,
-    patterns: [
-      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-    ]
-  },
-};
-
-
-// Return slots for that staff on a date, rotating the 3 patterns on each repeat date.
-// Weekends return no slots.
-function getDummySlotsForUserOnDate(userId, date){
-  const dow = date.getDay();
-  if (dow === 0 || dow === 6) return []; // Sunday(0) or Saturday(6) -> none
-
-  const cfg = DUMMY_BY_USER[userId];
-  if (!cfg) return [];
-
-  const oneDay = 86400000;
-  const diffDays = Math.floor((startOfDay(date) - startOfDay(cfg.anchor)) / oneDay);
-
-  // Only use times on “pattern” dates: anchor + n*repeat
-  if (diffDays % cfg.repeat !== 0) return [];
-
-  // Rotate which of the 3 sets is used on each pattern occurrence
-  const patternIndex = Math.floor(diffDays / cfg.repeat) % cfg.patterns.length;
-  const chosen = cfg.patterns[patternIndex];
-
-  return chosen.map(([s,e]) => ({ start: dateAtTime(date,s), end: dateAtTime(date,e) }));
-}
-
-
+  // Explicitly no fallback -> guarantees empty-state appears on non-pattern weekdays
+  function buildSlotsForDay(user, date, slotMinutes){ return []; }
 
   // ===== DOM =====
   const modal = document.getElementById('modal');
@@ -540,12 +473,10 @@ function getDummySlotsForUserOnDate(userId, date){
   modal.addEventListener('click',(e)=>{if(e.target===modal) modal.classList.remove('open')});
 
   const createdByName = document.getElementById('createdByName');
-  const meetingStage = document.getElementById('meetingStage');
-  const timezoneSel = document.getElementById('timezone');
   const startDate = document.getElementById('startDate');
-const startTime = document.getElementById('startTime');
-const endDate   = document.getElementById('endDate');
-const endTime   = document.getElementById('endTime');
+  const startTime = document.getElementById('startTime');
+  const endDate   = document.getElementById('endDate');
+  const endTime   = document.getElementById('endTime');
 
   // subtabs
   const tabInvitees = document.getElementById('tabInvitees');
@@ -555,7 +486,6 @@ const endTime   = document.getElementById('endTime');
 
   // invitees
   const customerPicker = document.getElementById('customerPicker');
-  const inviteeRole = document.getElementById('inviteeRole');
   const addInviteeBtn = document.getElementById('addInviteeBtn');
   const suggestedContacts = document.getElementById('suggestedContacts');
   const inviteeList = document.getElementById('inviteeList');
@@ -565,305 +495,263 @@ const endTime   = document.getElementById('endTime');
   const staffRole = document.getElementById('staffRole');
   const staffList = document.getElementById('staffList');
   const staffAvailability = document.getElementById('staffAvailability');
-  const daysContainer = document.getElementById('daysContainer');
   const availabilityHint = document.getElementById('availabilityHint');
-  const prevWeek = document.getElementById('prevWeek');
-  const nextWeek = document.getElementById('nextWeek');
 
-
-  // ===== Init =====
   function init(){
     createdByName.textContent = loggedInUser.name;
-// Inline menus: Status
-const statusBtn  = document.getElementById('statusValue');
-const statusMenu = document.getElementById('statusMenu');
-statusBtn.textContent = state.status;
-mountInlineMenu(statusBtn, statusMenu, STATUS_OPTIONS, (val)=>{
-  state.status = val;
-  statusBtn.textContent = val;
-});
 
-// Inline menus: Stage
-const stageBtn  = document.getElementById('stageValue');
-const stageMenu = document.getElementById('stageMenu');
-stageBtn.textContent = state.stage;
-mountInlineMenu(stageBtn, stageMenu, STAGE_OPTIONS, (val)=>{
-  state.stage = val;
-  stageBtn.textContent = val;
-});
+    // Inline menus
+    const statusBtn  = document.getElementById('statusValue');
+    const statusMenu = document.getElementById('statusMenu');
+    statusBtn.textContent = state.status;
+    mountInlineMenu(statusBtn, statusMenu, STATUS_OPTIONS, (val)=>{ state.status = val; statusBtn.textContent = val; });
 
-// Inline menus: Timezone
-const tzBtn  = document.getElementById('tzValue');
-const tzMenu = document.getElementById('tzMenu');
-tzBtn.textContent = state.timezone;
-mountInlineMenu(tzBtn, tzMenu, TZ_OPTIONS, (val)=>{
-  state.timezone = val;
-  tzBtn.textContent = val;
-});
+    const stageBtn  = document.getElementById('stageValue');
+    const stageMenu = document.getElementById('stageMenu');
+    stageBtn.textContent = state.stage;
+    mountInlineMenu(stageBtn, stageMenu, STAGE_OPTIONS, (val)=>{ state.stage = val; stageBtn.textContent = val; });
 
-    // roles
-    staffRole.innerHTML = meetingRoles.map(r=>`<option>${cap(r)}</option>`).join('');
+    const tzBtn  = document.getElementById('tzValue');
+    const tzMenu = document.getElementById('tzMenu');
+    tzBtn.textContent = state.timezone;
+    mountInlineMenu(tzBtn, tzMenu, TZ_OPTIONS, (val)=>{ state.timezone = val; tzBtn.textContent = val; });
+
+    // STAFF roles (kept)
+    staffRole.innerHTML = meetingRoles.map(r=>`<option>${r.charAt(0).toUpperCase()+r.slice(1)}</option>`).join('');
     staffRole.value = 'Host';
-    inviteeRole.innerHTML = meetingRoles.map(r=>`<option>${cap(r)}</option>`).join('');
-    inviteeRole.value = 'Client';
 
     // pickers
     attendingStaff.innerHTML = `<option value="">— Select staff —</option>` + internalUsers.map(u=>`<option value="${u.id}">${u.name} · ${u.title}</option>`).join('');
     customerPicker.innerHTML = `<option value="">— Select contact —</option>` +
-  customers.map(c=>`<option value="${c.id}">${displayNameNameFirst(c.name)}</option>`).join('');
+      customers.map(c=>`<option value="${c.id}">${displayNameNameFirst(c.name)}</option>`).join('');
 
+    // Suggested contacts (ONE big box)
+    suggestedContacts.innerHTML = suggested.map(c=>`
+      <div class="suggested-row">
+        <div class="meta" style="flex:1;min-width:0">
+          <div class="name">${displayNameNameFirst(c.name)}</div>
+          <div class="email">${c.email}</div>
+        </div>
+        <button class="btn" data-add-contact="${c.id}">Add</button>
+      </div>
+    `).join('');
 
-    // suggested
-    suggested.forEach(c=>{
-      const el = document.createElement('div'); el.className='list-item';
-      el.innerHTML = `<div>${displayNameNameFirst(c.name)}<div class="hint">${c.email}</div></div>
-<button class="btn" data-add-contact="${c.id}">Add</button>`;
+    // default datetimes (next sensible time)
+    const now = new Date();
+    now.setMinutes(now.getMinutes()<30?30:0,0,0);
+    if(now.getMinutes()===0) now.setHours(now.getHours()+1);
+    const later = new Date(now.getTime()+defaultSlotMinutes*60*1000);
 
-      suggestedContacts.appendChild(el);
-    });
-
-  // default datetimes (next sensible time)
-const now = new Date();
-now.setMinutes(now.getMinutes()<30?30:0,0,0);
-if(now.getMinutes()===0) now.setHours(now.getHours()+1);
-const later = new Date(now.getTime()+defaultSlotMinutes*60*1000);
-
-startDate.value = toISO(now).slice(0,10);
-startTime.value = toISO(now).slice(11,16);
-endDate.value   = toISO(later).slice(0,10);
-endTime.value   = toISO(later).slice(11,16);
-
-
-   
+    startDate.value = toISO(now).slice(0,10);
+    startTime.value = toISO(now).slice(11,16);
+    endDate.value   = toISO(later).slice(0,10);
+    endTime.value   = toISO(later).slice(11,16);
 
     tabInvitees.addEventListener('click', ()=> switchSub('invitees'));
     tabStaff.addEventListener('click', ()=> switchSub('staff'));
 
-    // Invitees: selection does NOT auto-add; use button
+    // Invitees add
     addInviteeBtn.addEventListener('click', ()=>{
       const id = customerPicker.value; if(!id) return;
       const c = [...customers, ...suggested].find(x=>x.id===id);
-      addInvitee(c, inviteeRole.value);
+      addInvitee(c);
       customerPicker.value='';
     });
+    // Suggested add (delegated)
     suggestedContacts.addEventListener('click', (e)=>{
-      const id = e.target?.getAttribute?.('data-add-contact'); if(!id) return; const c=suggested.find(x=>x.id===id); addInvitee(c, inviteeRole.value);
+      const id = e.target?.getAttribute?.('data-add-contact'); if(!id) return;
+      const c = suggested.find(x=>x.id===id); addInvitee(c);
     });
 
     attendingStaff.addEventListener('change', onStaffChange);
     document.getElementById('addStaffBtn').addEventListener('click', ()=>{
-  const id = attendingStaff.value;
-  if(!id) return;
-  if(!state.staffOnMeeting.some(s=>s.id===id)){
-    state.staffOnMeeting.push({ id, role: staffRole.value });
-    renderStaffList();
-  }
-});
-
-    if (prevWeek) prevWeek.addEventListener('click', ()=>{ state.weekOffset=Math.max(0, state.weekOffset-1); renderAvailability(); });
-if (nextWeek) nextWeek.addEventListener('click', ()=>{ state.weekOffset+=1; renderAvailability(); });
-
+      const id = attendingStaff.value;
+      if(!id) return;
+      if(!state.staffOnMeeting.some(s=>s.id===id)){
+        state.staffOnMeeting.push({ id, role: staffRole.value });
+        renderStaffList();
+      }
+    });
 
     document.getElementById('scheduleBtn').addEventListener('click', ()=> alert('Scheduled! (mock)'));
     document.getElementById('saveDraftBtn').addEventListener('click', ()=> alert('Saved draft. (mock)'));
     document.getElementById('closeModal').addEventListener('click', ()=> modal.classList.remove('open'));
 
-    renderInviteeList(); renderStaffList();
+    renderInviteeList();
+    renderStaffList();
   }
 
-  
-
-  function switchSub(which){ const inv=which==='invitees'; tabInvitees.setAttribute('aria-selected',inv); tabStaff.setAttribute('aria-selected',!inv); panelInvitees.classList.toggle('active',inv); panelStaff.classList.toggle('active',!inv); }
+  function switchSub(which){
+    const inv = which==='invitees';
+    tabInvitees.setAttribute('aria-selected',inv);
+    tabStaff.setAttribute('aria-selected',!inv);
+    panelInvitees.classList.toggle('active',inv);
+    panelStaff.classList.toggle('active',!inv);
+  }
 
   // Staff picker -> show availability
   function onStaffChange(){
-  const id = attendingStaff.value || null;
-  state.staff = id;
-  // toggle availability section only
-  staffAvailability.style.display = id ? 'block' : 'none';
-  renderAvailability();
-}
-
-
-  // Availability (uses defaultSlotMinutes to build slots)
- function renderAvailability(){
-  const hint = document.getElementById('availabilityHint');
-  const grid = document.getElementById('calGrid');
-  const monthLbl = document.getElementById('calMonthLabel');
-  const timeList = document.getElementById('timeList');
-  const timeTitle = document.getElementById('timePanelTitle');
-
-  grid.innerHTML = '';
-  timeList.innerHTML = '';
-
-  if(!state.staff){
-    hint.textContent = 'Select an Attending Staff to view availability.';
-    // render header row only (DOW)
-    renderCalSkeleton(grid);
-    monthLbl.textContent = formatMonthLabel(state.refMonth);
-    timeTitle.textContent = 'Times';
-    timeList.innerHTML = `<div class="time-empty">No staff selected.</div>`;
-    wireCalNav(); // still let them flip months visually
-    return;
-  }
-
-  const user = internalUsers.find(u=>u.id===state.staff);
-  hint.textContent = `Showing ${user.name}'s availability`;
-
-  // Calendar build
-  renderCalendar(grid, state.refMonth, state.selectedCalDate);
-  monthLbl.textContent = formatMonthLabel(state.refMonth);
-  wireCalNav();
-
-  // Times for selected date (reference-only)
-  timeTitle.textContent = state.selectedCalDate.toLocaleDateString(undefined,{ weekday:'long', month:'long', day:'numeric' });
-
-let slots = getDummySlotsForUserOnDate(user.id, state.selectedCalDate);
-const isWeekend = [0,6].includes(state.selectedCalDate.getDay());
-if (!slots.length && !isWeekend) {
-  slots = buildSlotsForDay(user, state.selectedCalDate, defaultSlotMinutes);
-}
-
-function buildSlotsForDay(user, date, slotMinutes){
-  // No fallback slots: force the empty-state message to appear
-  return [];
-}
-
-
-  if(!slots.length){
-   const isWeekend = [0,6].includes(state.selectedCalDate.getDay());
-timeList.innerHTML = `<div class="time-empty">${isWeekend ? 'No available times for this date.' : 'No available times for this date.'}</div>`;
-
-  } else {
-    // Print as a list (no click behavior)
-    const frag = document.createDocumentFragment();
-    slots.forEach(s=>{
-      const row = document.createElement('div');
-      row.className = 'time-row';
-      row.textContent = `${fmtTime(s.start)} – ${fmtTime(s.end)}`;
-      frag.appendChild(row);
-    });
-    timeList.appendChild(frag);
-  }
-
-  /*** helpers ***/
-  function wireCalNav(){
-    document.getElementById('calPrev').onclick = ()=>{ shiftMonth(-1); };
-    document.getElementById('calNext').onclick = ()=>{ shiftMonth(1); };
-    document.getElementById('calToday').onclick = ()=>{ state.refMonth = new Date(); state.selectedCalDate = new Date(); renderAvailability(); };
-  }
-
-  function shiftMonth(delta){
-    const d = new Date(state.refMonth);
-    d.setMonth(d.getMonth()+delta);
-    state.refMonth = d;
-    // Keep selected date in the shown month if it's outside
-    const first = startOfMonth(d), last = endOfMonth(d);
-    if(state.selectedCalDate < first || state.selectedCalDate > last){
-      state.selectedCalDate = new Date(d.getFullYear(), d.getMonth(), Math.min( new Date().getDate(), last.getDate() ));
-    }
+    const id = attendingStaff.value || null;
+    state.staff = id;
+    staffAvailability.style.display = id ? 'block' : 'none';
     renderAvailability();
   }
-}
 
-/* Build the calendar grid (with DOW header) */
-function renderCalendar(container, monthRef, selectedDate){
-  // DOW header
-  renderCalSkeleton(container);
+  // Availability
+  function renderAvailability(){
+    const grid = document.getElementById('calGrid');
+    const monthLbl = document.getElementById('calMonthLabel');
+    const timeList = document.getElementById('timeList');
+    const timeTitle = document.getElementById('timePanelTitle');
 
-  const first = startOfMonth(monthRef);
-  const last  = endOfMonth(monthRef);
+    grid.innerHTML = '';
+    timeList.innerHTML = '';
 
-  // find grid start (Sunday before/at first)
-  const gridStart = new Date(first);
-  gridStart.setDate(first.getDate() - first.getDay());
-  // grid end (Saturday after/at last)
-  const gridEnd = new Date(last);
-  gridEnd.setDate(last.getDate() + (6 - last.getDay()));
+    if(!state.staff){
+      availabilityHint.textContent = 'Select an Attending Staff to view availability.';
+      renderCalSkeleton(grid);
+      monthLbl.textContent = formatMonthLabel(state.refMonth);
+      timeTitle.textContent = 'Times';
+      timeList.innerHTML = `<div class="time-empty">No staff selected.</div>`;
+      wireCalNav();
+      return;
+    }
 
-  const today = new Date();
-  for(let d = new Date(gridStart); d <= gridEnd; d.setDate(d.getDate()+1)){
-    const day = new Date(d);
-    const btn = document.createElement('div');
-    btn.className = 'cal-day';
-    if(day.getMonth() !== monthRef.getMonth()) btn.classList.add('out');
-    if(sameDay(day, today)) btn.classList.add('today');
-    if(sameDay(day, selectedDate)) btn.classList.add('selected');
-    btn.textContent = String(day.getDate());
-    btn.addEventListener('click', ()=>{
-      state.selectedCalDate = day;
-      // re-render to update selected & times list
+    const user = internalUsers.find(u=>u.id===state.staff);
+    availabilityHint.textContent = `Showing ${user.name}'s availability`;
+
+    renderCalendar(grid, state.refMonth, state.selectedCalDate);
+    monthLbl.textContent = formatMonthLabel(state.refMonth);
+    wireCalNav();
+
+    timeTitle.textContent = state.selectedCalDate.toLocaleDateString(undefined,{ weekday:'long', month:'long', day:'numeric' });
+
+    let slots = getDummySlotsForUserOnDate(user.id, state.selectedCalDate);
+    const isWeekend = [0,6].includes(state.selectedCalDate.getDay());
+    if (!slots.length && !isWeekend) {
+      slots = buildSlotsForDay(user, state.selectedCalDate, defaultSlotMinutes);
+    }
+
+    if(!slots.length){
+      timeList.innerHTML = `<div class="time-empty">${isWeekend ? 'No available times (weekend).' : 'No available times for this date.'}</div>`;
+    } else {
+      const frag = document.createDocumentFragment();
+      slots.forEach(s=>{
+        const row = document.createElement('div');
+        row.className = 'time-row';
+        row.textContent = `${fmtTime(s.start)} – ${fmtTime(s.end)}`;
+        frag.appendChild(row);
+      });
+      timeList.appendChild(frag);
+    }
+
+    function wireCalNav(){
+      document.getElementById('calPrev').onclick = ()=>{ shiftMonth(-1); };
+      document.getElementById('calNext').onclick = ()=>{ shiftMonth(1); };
+      document.getElementById('calToday').onclick = ()=>{ state.refMonth = new Date(); state.selectedCalDate = new Date(); renderAvailability(); };
+    }
+    function shiftMonth(delta){
+      const d = new Date(state.refMonth);
+      d.setMonth(d.getMonth()+delta);
+      state.refMonth = d;
+      const first = startOfMonth(d), last = endOfMonth(d);
+      if(state.selectedCalDate < first || state.selectedCalDate > last){
+        state.selectedCalDate = new Date(d.getFullYear(), d.getMonth(), Math.min( new Date().getDate(), last.getDate() ));
+      }
       renderAvailability();
-    });
-    container.appendChild(btn);
+    }
   }
-}
 
-/* Only the DOW header row (Sun..Sat) */
-function renderCalSkeleton(container){
-  // clear before adding header (caller may have already cleared)
-  // Add DOW row
-  for(let i=0;i<7;i++){
-    const h = document.createElement('div');
-    h.className = 'cal-dow';
-    h.textContent = dayNameShort(i);
-    container.appendChild(h);
+  function renderCalendar(container, monthRef, selectedDate){
+    renderCalSkeleton(container);
+    const first = startOfMonth(monthRef);
+    const last  = endOfMonth(monthRef);
+    const gridStart = new Date(first); gridStart.setDate(first.getDate() - first.getDay());
+    const gridEnd = new Date(last); gridEnd.setDate(last.getDate() + (6 - last.getDay()));
+    const today = new Date();
+
+    for(let d = new Date(gridStart); d <= gridEnd; d.setDate(d.getDate()+1)){
+      const day = new Date(d);
+      const btn = document.createElement('div');
+      btn.className = 'cal-day';
+      if(day.getMonth() !== monthRef.getMonth()) btn.classList.add('out');
+      if(sameDay(day, today)) btn.classList.add('today');
+      if(sameDay(day, selectedDate)) btn.classList.add('selected');
+      btn.textContent = String(day.getDate());
+      btn.addEventListener('click', ()=>{
+        state.selectedCalDate = day;
+        renderAvailability();
+      });
+      container.appendChild(btn);
+    }
   }
-}
+
+  function renderCalSkeleton(container){
+    container.innerHTML = ''; // ensure clean before header row
+    for(let i=0;i<7;i++){
+      const h = document.createElement('div');
+      h.className = 'cal-dow';
+      h.textContent = dayNameShort(i);
+      container.appendChild(h);
+    }
+  }
 
   // Invitees & Staff lists
-  function addInvitee(contact, role){ if(!contact) return; if(state.invitees.some(i=>i.id===contact.id)) return; state.invitees.push({
-  id: contact.id,
-  name: contact.name,
-  displayName: displayNameNameFirst(contact.name),
-  email: contact.email,
-  role
-});
-renderInviteeList(); }
-  function removeInvitee(id){ state.invitees = state.invitees.filter(i=> i.id!==id); renderInviteeList(); }
+  function addInvitee(contact){
+    if(!contact) return;
+    if(state.invitees.some(i=>i.id===contact.id)) return;
+    state.invitees.push({ id: contact.id, name: contact.name, displayName: displayNameNameFirst(contact.name), email: contact.email });
+    renderInviteeList();
+  }
+  function removeInvitee(id){
+    state.invitees = state.invitees.filter(i=> i.id!==id);
+    renderInviteeList();
+  }
   function renderInviteeList(){
     inviteeList.innerHTML='';
-    if(!state.invitees.length){ const empty=document.createElement('div'); empty.className='hint'; empty.textContent='No invitees added yet.'; inviteeList.appendChild(empty); return; }
+    if(!state.invitees.length){
+      const empty=document.createElement('div');
+      empty.className='hint';
+      empty.textContent='No invitees added yet.';
+      inviteeList.appendChild(empty);
+      return;
+    }
     state.invitees.forEach(i=>{
       const row=document.createElement('div'); row.className='list-item';
       row.innerHTML = `
-  <div style="min-width:0;flex:1">
-    <strong style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.displayName || displayNameNameFirst(i.name)}</strong>
-    <div class="hint" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.email}</div>
-  </div>
-  <div class="row" style="flex:0 0 auto;gap:8px">
-    <select data-invitee-role="${i.id}">
-      ${meetingRoles.map(r=>`<option ${r.toLowerCase()===i.role.toLowerCase()?'selected':''}>${cap(r)}</option>`).join('')}
-    </select>
-    <button class="btn" data-remove-invitee="${i.id}">Remove</button>
-  </div>
-`;
-
+        <div style="min-width:0;flex:1">
+          <strong style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.displayName || displayNameNameFirst(i.name)}</strong>
+          <div class="hint" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.email}</div>
+        </div>
+        <div class="row" style="flex:0 0 auto;gap:8px">
+          <button class="btn" data-remove-invitee="${i.id}">Remove</button>
+        </div>
+      `;
       inviteeList.appendChild(row);
     });
     inviteeList.querySelectorAll('[data-remove-invitee]').forEach(btn=> btn.addEventListener('click',()=> removeInvitee(btn.getAttribute('data-remove-invitee'))));
-    inviteeList.querySelectorAll('[data-invitee-role]').forEach(sel=> sel.addEventListener('change',()=>{ const id=sel.getAttribute('data-invitee-role'); const inv=state.invitees.find(x=>x.id===id); if(inv) inv.role=sel.value; }));
   }
 
   function renderStaffList(){
     staffList.innerHTML='';
-    if(!state.staffOnMeeting.length){ const empty=document.createElement('div'); empty.className='hint'; empty.textContent='No staff selected.'; staffList.appendChild(empty); return; }
+    if(!state.staffOnMeeting.length){
+      const empty=document.createElement('div'); empty.className='hint'; empty.textContent='No staff selected.'; staffList.appendChild(empty); return;
+    }
     state.staffOnMeeting.forEach(s=>{
       const u = internalUsers.find(x=>x.id===s.id) || { name:'Unknown' };
       const row = document.createElement('div'); row.className='list-item';
       row.innerHTML = `
-  <div style="min-width:0;flex:1">
-    <strong style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.name}</strong>
-    <div class="hint" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.title||''}</div>
-  </div>
-  <div class="row" style="flex:0 0 auto;gap:8px">
-    <select data-staff-role="${s.id}">
-      ${meetingRoles.map(r=>`<option ${r.toLowerCase()===s.role.toLowerCase()?'selected':''}>${cap(r)}</option>`).join('')}
-    </select>
-    <button class="btn" data-remove-staff="${s.id}">Remove</button>
-  </div>
-`;
-
+        <div style="min-width:0;flex:1">
+          <strong style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.name}</strong>
+          <div class="hint" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.title||''}</div>
+        </div>
+        <div class="row" style="flex:0 0 auto;gap:8px">
+          <select data-staff-role="${s.id}">
+            ${meetingRoles.map(r=>`<option ${r.toLowerCase()===s.role.toLowerCase()?'selected':''}>${r.charAt(0).toUpperCase()+r.slice(1)}</option>`).join('')}
+          </select>
+          <button class="btn" data-remove-staff="${s.id}">Remove</button>
+        </div>
+      `;
       staffList.appendChild(row);
     });
     staffList.querySelectorAll('[data-remove-staff]').forEach(btn=> btn.addEventListener('click',()=>{
@@ -872,10 +760,14 @@ renderInviteeList(); }
       if(state.staff===id){ state.staff=null; attendingStaff.value=''; staffAvailability.style.display='none'; }
       renderStaffList(); renderAvailability();
     }));
-    staffList.querySelectorAll('[data-staff-role]').forEach(sel=> sel.addEventListener('change',()=>{ const id=sel.getAttribute('data-staff-role'); const st=state.staffOnMeeting.find(x=>x.id===id); if(st) st.role=sel.value; }));
+    staffList.querySelectorAll('[data-staff-role]').forEach(sel=> sel.addEventListener('change',()=>{
+      const id=sel.getAttribute('data-staff-role');
+      const st=state.staffOnMeeting.find(x=>x.id===id);
+      if(st) st.role=sel.value;
+    }));
   }
 
-  // go
+  // Init
   init();
 </script>
 </body>
