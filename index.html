@@ -392,7 +392,8 @@
     { id:'c-203', name:'Blue Harbor Dental – Dr. N. Patel', email:'np@bh-dental.example' },
     { id:'c-204', name:'Fresh Start Advancement – Anthony Rosa', email:'anthony@fsa.example' },
   ];
-  const suggested = [
+let suggested = [
+
     { id:'c-205', name:'Garden State Roofing – Alicia Kim', email:'alicia@gstate.example' },
     { id:'c-206', name:'Oceanview Fitness – Mark Chen', email:'mark@ovfit.example' },
     { id:'c-207', name:'North Ridge Pediatrics – Dr. Lee', email:'lee@nrpeds.example' },
@@ -421,6 +422,19 @@
   }
   function startOfDay(d){ const x=new Date(d); x.setHours(0,0,0,0); return x; }
   function dateAtTime(baseDate, hhmm){ const [hh,mm] = hhmm.split(':').map(Number); const d = new Date(baseDate); d.setHours(hh, mm, 0, 0); return d; }
+
+function renderSuggested(){
+  suggestedContacts.innerHTML = suggested.map(c=>`
+    <div class="suggested-row">
+      <div class="meta" style="flex:1;min-width:0">
+        <div class="name">${displayNameNameFirst(c.name)}</div>
+        <div class="email">${c.email}</div>
+      </div>
+      <button class="btn" data-add-contact="${c.id}">Add</button>
+    </div>
+  `).join('');
+}
+
 
   // Patterned dummy availability with 3 rotating sets; weekends off
   const DUMMY_BY_USER = {
@@ -525,16 +539,8 @@
     customerPicker.innerHTML = `<option value="">— Select contact —</option>` +
       customers.map(c=>`<option value="${c.id}">${displayNameNameFirst(c.name)}</option>`).join('');
 
-    // Suggested contacts (ONE big box)
-    suggestedContacts.innerHTML = suggested.map(c=>`
-      <div class="suggested-row">
-        <div class="meta" style="flex:1;min-width:0">
-          <div class="name">${displayNameNameFirst(c.name)}</div>
-          <div class="email">${c.email}</div>
-        </div>
-        <button class="btn" data-add-contact="${c.id}">Add</button>
-      </div>
-    `).join('');
+    renderSuggested();
+
 
     // default datetimes (next sensible time)
     const now = new Date();
@@ -558,20 +564,39 @@
       customerPicker.value='';
     });
     // Suggested add (delegated)
-    suggestedContacts.addEventListener('click', (e)=>{
-      const id = e.target?.getAttribute?.('data-add-contact'); if(!id) return;
-      const c = suggested.find(x=>x.id===id); addInvitee(c);
-    });
+  suggestedContacts.addEventListener('click', (e)=>{
+  const id = e.target?.getAttribute?.('data-add-contact'); 
+  if(!id) return;
+  const c = suggested.find(x=>x.id===id);
+  if(!c) return;
+  addInvitee(c);
+  // remove from suggestions then re-render
+  suggested = suggested.filter(x=>x.id !== id);
+  renderSuggested();
+});
+
 
     attendingStaff.addEventListener('change', onStaffChange);
     document.getElementById('addStaffBtn').addEventListener('click', ()=>{
-      const id = attendingStaff.value;
-      if(!id) return;
-      if(!state.staffOnMeeting.some(s=>s.id===id)){
-        state.staffOnMeeting.push({ id, role: staffRole.value });
-        renderStaffList();
-      }
-    });
+  const id = attendingStaff.value;
+  if(!id) return;                           // if nothing is chosen, do nothing
+
+  // 1) Add the chosen staff to the list (only if not already there)
+  if(!state.staffOnMeeting.some(s=>s.id===id)){
+    state.staffOnMeeting.push({ id, role: staffRole.value });
+    renderStaffList();                      // refresh the list on screen
+  }
+
+  // 2) Put the staff picker back to the “— Select staff —” option
+  attendingStaff.value = '';
+
+  // 3) Keep the “Available times” box visible and showing the same person
+  //    (we DO NOT clear who is selected for availability)
+  staffAvailability.style.display = 'block';
+  renderAvailability();                     // refresh the calendar/times on screen
+});
+
+
 
     document.getElementById('scheduleBtn').addEventListener('click', ()=> alert('Scheduled! (mock)'));
     document.getElementById('saveDraftBtn').addEventListener('click', ()=> alert('Saved draft. (mock)'));
@@ -633,7 +658,7 @@
     }
 
     if(!slots.length){
-      timeList.innerHTML = `<div class="time-empty">${isWeekend ? 'No available times (weekend).' : 'No available times for this date.'}</div>`;
+      timeList.innerHTML = `<div class="time-empty">${isWeekend ? 'No available times for this date.' : 'No available times for this date.'}</div>`;
     } else {
       const frag = document.createDocumentFragment();
       slots.forEach(s=>{
