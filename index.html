@@ -8,8 +8,9 @@
   :root{
     --bg:#f6f8fb; --card:#ffffff; --ink:#243048; --muted:#667085; --line:#e6ebf2; --accent:#0F2D56; --ok:#0b62ff;
     --chip:#f4f7fb; --chip-line:#e7edf5; --pill:#eaf1ff; --pill-ink:#356aff;
-    --person-bg:#f2f4f7; /* gray background for chosen Invitees & Staff */
-    --person-line:#e0e4ec;
+    --person-bg:#f2f4f7; --person-line:#e0e4ec;
+    --warn:#B42318; --warn-bg:#FEF3F2; --warn-line:#FEE4E2;
+    --ok-bg:#eaf1ff; --ok-line:#cfe0ff;
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;font-family:'Segoe UI',system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--ink)}
@@ -37,25 +38,18 @@
     display:flex;
     flex-direction:column;
   }
-  .panel{
-    padding:16px;
-    flex:1;
-    overflow-y:auto;
-  }
+  .panel{padding:16px;flex:1;overflow-y:auto}
 
   .dialog-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
   .dialog-head h3{margin:0;font-size:18px}
   .created-pill{margin-left:auto;background:var(--pill);color:var(--pill-ink);border:1px solid #cfe0ff;padding:6px 10px;border-radius:999px;font-size:12px}
 
-  /* Inline select (click text -> menu) */
+  /* Inline select */
   .inline-select{position:relative;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
   .inline-label{font-size:14px;line-height:1.2;color:#1f2a44;font-weight:600}
-  .inline-value{
-    background:transparent;border:none;padding:0;margin:0;appearance:none;cursor:pointer;
-    font-weight:700;color:var(--ok);font-size:14px;line-height:1.2;
-  }
-  .inline-value:hover{ text-decoration:underline; }
-  .inline-value:focus-visible{ outline:none; text-decoration:underline; }
+  .inline-value{background:transparent;border:none;padding:0;margin:0;appearance:none;cursor:pointer;font-weight:700;color:var(--ok);font-size:14px;line-height:1.2}
+  .inline-value:hover{text-decoration:underline}
+  .inline-value:focus-visible{outline:none;text-decoration:underline}
   .inline-menu{position:absolute;z-index:3;top:calc(100% + 6px);left:0;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.08);display:none;overflow:auto;max-height:240px}
   .inline-menu.open{display:block}
   .inline-option{padding:10px 12px;cursor:pointer;border-bottom:1px solid #f2f5fa}
@@ -85,10 +79,8 @@
   .chip{background:var(--chip);border:1px solid var(--chip-line);border-radius:999px;padding:8px 10px;font-size:12px;cursor:pointer}
   .chip[data-active="true"]{background:#eaf1ff;border-color:#cfe0ff;color:#356aff}
 
-  /* People tabs (Invitees / Staff) */
-  .subtabs{
-    display:inline-flex;align-items:center;gap:2px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#eef4fb;margin-top:6px;
-  }
+  /* People tabs */
+  .subtabs{display:inline-flex;align-items:center;gap:2px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#eef4fb;margin-top:6px}
   .subtab{background:transparent;border:none;border-radius:10px;padding:8px 14px;font-weight:600;color:#1f2a44;cursor:pointer}
   .subtab[aria-selected="true"]{background:#fff;box-shadow:0 1px 2px rgba(16,24,40,.06);border:1px solid var(--line)}
 
@@ -97,19 +89,10 @@
   .list{display:flex;flex-direction:column;gap:8px}
 
   /* Person card */
-  .person-card{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    background:var(--person-bg);
-    border:1px solid var(--person-line);
-    border-radius:12px;
-    padding:12px;
-  }
+  .person-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--person-bg);border:1px solid var(--person-line);border-radius:12px;padding:12px;cursor:default}
+  .person-card[data-clickable="true"]{cursor:pointer}
   .person-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
-  .avatar{
-    width:36px;height:36px;border-radius:50%;flex:0 0 36px;
-    background:#e6ecf7;color:#0f2142;display:grid;place-items:center;font-weight:700;font-size:14px;
-    overflow:hidden;border:1px solid #dfe6f3;
-  }
+  .avatar{width:36px;height:36px;border-radius:50%;flex:0 0 36px;background:#e6ecf7;color:#0f2142;display:grid;place-items:center;font-weight:700;font-size:14px;overflow:hidden;border:1px solid #dfe6f3}
   .avatar img{width:100%;height:100%;object-fit:cover;display:block}
   .meta{min-width:0}
   .name-row{display:flex;align-items:center;gap:8px}
@@ -119,105 +102,69 @@
   .subline{font-size:12px;color:#667085;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .person-right{display:flex;align-items:center;gap:10px}
 
-  /* View Profile: plain text link (no border/background) */
-  .view-link{
-    display:inline;
-    color:#0b62ff;
-    font-weight:600;
-    text-decoration:underline;
-    border:none;
-    background:transparent;
-    padding:0;
-    border-radius:0;
-  }
+  .view-link{display:inline;color:#0b62ff;font-weight:600;text-decoration:underline;border:none;background:transparent;padding:0;border-radius:0}
   .view-link:hover{opacity:.9}
 
   /* Suggested contacts */
-  .suggested-box{
-    background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto;
-  }
-  .suggested-row{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px;border:1px solid #eef2f7;border-radius:8px;background:#fafcff;
-  }
+  .suggested-box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto}
+  .suggested-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px;border:1px solid #eef2f7;border-radius:8px;background:#fafcff}
   .suggested-row .meta{min-width:0}
   .suggested-row .name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .suggested-row .email{font-size:12px;color:#var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-  /* Availability (inside Staff tab) */
+  /* Availability */
   .avail{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}
   .avail-head{display:flex;align-items:center;justify-content:space-between}
-
   .avail.reference{background:#f7f8fb;border-style:dashed;position:relative}
-  .ref-banner{
-    display:flex; align-items:center; gap:8px;
-    background:#eef1f6;
-    border:1px solid #dfe4ee;
-    color:#475467;
-    padding:8px 10px;
-    border-radius:8px;
-    font-size:12px;
-    font-weight:700;
-    margin:8px 0 12px 0;
-  }
-  .ref-banner svg{ flex:0 0 auto }
-
+  .ref-banner{display:flex;align-items:center;gap:8px;background:#eef1f6;border:1px solid #dfe4ee;color:#475467;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:700;margin:8px 0 12px 0}
+  .ref-banner svg{flex:0 0 auto}
   .cal, .time-panel{background:#fff;box-shadow:0 1px 0 rgba(16,24,40,.02)}
-  .avail-head strong{ color:#101828; }
-  .avail-muted{ color:#667085; }
+  .avail-head strong{color:#101828}
+  .avail-muted{color:#667085}
+  .avail-warn{color:var(--warn);font-weight:700}
 
-  .day{border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;background:#fff}
-  .day h4{margin:0;font-size:12px;color:#var(--muted)}
-  .slot{display:block;width:100%;background:#f8fafc;border:1px solid #e7edf5;padding:8px;text-align:center;border-radius:8px;cursor:pointer;font-size:12px}
-  .slot[disabled]{opacity:.45;cursor:not-allowed}
-  .slot.active{outline:2px solid var(--accent)}
+  .time-panel{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px;min-height:260px}
+  .time-panel h4{margin:0 0 8px 0}
+  .time-list{display:flex;flex-direction:column;gap:10px}
+  .time-row{border:none;background:transparent;padding:6px 8px;font-weight:600;color:#0b62ff;border-radius:8px; text-align:left; width:100%} /* LEFT align time buttons */
+  .time-row.active{outline:2px solid var(--ok);background:var(--ok-bg)}
+  .time-empty{color:#667085;font-size:14px;padding:12px}
+
+  /* Mini badge */
+  .role-badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;line-height:1;border:1px solid var(--ok-line);background:var(--ok-bg);color:#356aff}
+  .conflict-badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;line-height:1;border:1px solid var(--warn-line);background:var(--warn-bg);color:var(--warn)}
 
   /* Footer actions */
   .actions{display:flex;justify-content:flex-end;gap:10px;padding:12px;border-top:1px solid var(--line);flex-wrap:wrap}
   .btn{padding:10px 14px;border-radius:10px;border:1px solid #d0d7e2;background:#fff;cursor:pointer;font-weight:700}
   .btn.primary{background:var(--ok);border-color:var(--ok);color:#fff}
   .btn.ghost{background:#f4f7fb}
-  .error-note{
-    flex-basis:100%;
-    color:#B42318;
-    background:#FEF3F2;
-    border:1px solid #FEE4E2;
-    padding:8px 10px;
-    border-radius:8px;
-    font-size:12px;
-    display:none;
-  }
+  .error-note{flex-basis:100%;color:#B42318;background:#FEF3F2;border:1px solid #FEE4E2;padding:8px 10px;border-radius:8px;font-size:12px;display:none}
 
   @media (max-width:940px){.grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.avail-days{grid-template-columns:repeat(2,1fr)}}
-  .list-item .row{ flex-wrap:nowrap; gap:8px; }
-  .list-item .btn{ padding:8px 10px; }
+  .list-item .row{flex-wrap:nowrap;gap:8px}
+  .list-item .btn{padding:8px 10px}
 
-  /* Suggested Availability (Calendly-style) */
-  .avail-head{margin-bottom:8px}
-  .avail-title{display:flex;align-items:center;gap:10px}
-  .avail-muted{color:var(--muted);font-size:12px}
-
+  /* Calendar */
   .cal-wrap{display:grid;grid-template-columns: 320px 1fr; gap:20px; align-items:start}
   @media (max-width:860px){ .cal-wrap{grid-template-columns:1fr} }
-
   .cal{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
   .cal-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line)}
   .cal-nav{display:flex;align-items:center;gap:8px}
   .cal-nav .chip{padding:6px 10px}
   .cal-month{font-weight:700}
-
   .cal-grid{display:grid;grid-template-columns: repeat(7, 1fr);gap:6px;padding:12px}
   .cal-dow{font-size:11px;color:#667085;text-transform:uppercase;text-align:center}
-  .cal-day{height:40px;display:grid;place-items:center;border-radius:10px;cursor:pointer;border:1px solid transparent;color:var(--ink);background:#fff}
-  .cal-day:hover{ border-color:#dfe6f3; background:#f7faff }
-  .cal-day.out{ color:#a7b1c2; background:#fafbfe }
-  .cal-day.today{ outline:2px solid #e0ebff }
-  .cal-day.selected{ background:#eaf1ff; border-color:#cfe0ff; color:#0b62ff; font-weight:700 }
-
-  .time-panel{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px;min-height:260px}
-  .time-panel h4{margin:0 0 8px 0}
-  .time-list{display:flex;flex-direction:column;gap:10px}
-  .time-row{border:none;background:transparent;padding:4px 0;font-weight:600;color:#0b62ff}
-  .time-empty{color:#667085;font-size:14px;padding:12px}
+  /* LEFT-ALIGNED DATE NUMBERS */
+  .cal-day{
+    height:40px;display:flex;align-items:flex-start;justify-content:flex-start;
+    border-radius:10px;cursor:pointer;border:1px solid transparent;color:var(--ink);
+    background:#fff;padding-left:8px;padding-top:6px
+  }
+  .cal-day:hover{border-color:#dfe6f3;background:#f7faff}
+  .cal-day.out{color:#a7b1c2;background:#fafbfe}
+  .cal-day.today{outline:2px solid #e0ebff}
+  .cal-day.selected{background:#eaf1ff;border-color:#cfe0ff;color:#0b62ff;font-weight:700}
 
   /* Step 3 Rich text editors */
   .rte{border:1px solid #e7edf5;border-radius:10px;min-height:120px;padding:10px;background:#fff}
@@ -270,6 +217,18 @@
   .loc-modal-body .full{grid-column:1 / -1}
   .loc-modal-close{background:transparent;border:none;font-size:18px;cursor:pointer}
   .loc-modal-foot{padding:12px 14px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+
+  /* Fixed "Meeting Stage: Scheduling" header pill */
+  .stage-tag{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .stage-label{font-size:12px;font-weight:700;color:#1f2a4}
+  .stage-pill{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid #cfe0ff;color:#356aff;background:#eaf1ff;font-size:12px;font-weight:700;line-height:1;white-space:nowrap}
+
+  /* Hide Meeting Stage & Status fields across steps */
+  .field:has(#stageSelect), .field:has(#stageValue_s3), .field:has(#stageValue_s4), .field:has(#stageValue_s5),
+  .field:has(#statusSelect), .field:has(#statusValue_s3), .field:has(#statusValue_s4), .field:has(#statusValue_s5){display:none!important}
+  .grid3:has(#statusSelect), .grid3:has(#statusValue_s3), .grid3:has(#statusValue_s4), .grid3:has(#statusValue_s5){grid-template-columns:1fr!important}
+  .grid3:has(#stageSelect), .grid3:has(#stageValue_s3), .grid3:has(#stageValue_s4), .grid3:has(#stageValue_s5){grid-template-columns:2fr 1fr!important}
+  .field:has(#meetingName), .field:has(#meetingName_s3), .field:has(#meetingName_s4), .field:has(#meetingName_s5){grid-column:1 / -1}
 </style>
 </head>
 <body>
@@ -285,13 +244,16 @@
       <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
         <div class="dialog-head">
           <h3 id="dlgTitle">Step 2</h3>
-          <span class="created-pill" id="createdByPill">Created by: <strong id="createdByName">Alex Johnson</strong></span>
+          <div class="stage-tag" id="fixedStageHeader" aria-label="Meeting Stage">
+            <span class="stage-label">Meeting Stage:</span>
+            <span class="stage-pill">Scheduling</span>
+          </div>
         </div>
 
         <div class="panel">
-          <!-- =============== STEP 2 PANEL (existing content) =============== -->
+          <!-- =============== STEP 2 PANEL =============== -->
           <div id="step2Panel">
-            <!-- Row 1: Meeting name + Status + Stage -->
+            <!-- Row 1: Meeting name -->
             <div class="grid3">
               <div class="field">
                 <label for="meetingName">Meeting name</label>
@@ -333,105 +295,66 @@
               </div>
             </div>
 
-            <!-- Row 3: Subtabs Invitees | Staff -->
+            <!-- Row 3: Subtabs Staff | Invitees -->
             <div class="subtabs" role="tablist" aria-label="Participant setup" style="margin-top:16px">
-              <button class="subtab" id="tabInvitees" aria-selected="true" aria-controls="panelInvitees">Invitees</button>
-              <button class="subtab" id="tabStaff" aria-selected="false" aria-controls="panelStaff">Staff</button>
+              <button class="subtab" id="tabStaff" aria-selected="true" aria-controls="panelStaff">Staff</button>
+              <button class="subtab" id="tabInvitees" aria-selected="false" aria-controls="panelInvitees">Invitees</button>
+            </div>
+
+            <!-- Staff Panel -->
+            <div id="panelStaff" class="subpanel active" role="tabpanel" aria-labelledby="tabStaff">
+              <div class="field">
+                <label for="attendingStaff">Staff</label>
+                <div class="row">
+                  <select id="attendingStaff" style="flex:1"></select>
+                </div>
+              </div>
+              <!-- Removed the chosen-staff list under the search box -->
             </div>
 
             <!-- Invitees Panel -->
-            <div id="panelInvitees" class="subpanel active" role="tabpanel" aria-labelledby="tabInvitees">
+            <div id="panelInvitees" class="subpanel" role="tabpanel" aria-labelledby="tabInvitees">
               <div class="grid2">
-                <!-- LEFT: Contact picker -->
                 <div class="field">
                   <label for="customerPicker">Contacts</label>
                   <div class="row">
                     <select id="customerPicker" style="flex:1"></select>
-                    <!-- Removed the Add button -->
                   </div>
                   <div class="hint">
                     <a href="#" id="addContactLink" style="color:#356aff;text-decoration:underline">+Add Contact</a>
                   </div>
                 </div>
 
-                <!-- RIGHT: Suggested contacts (one big box) -->
                 <div class="field">
                   <label>Suggested contacts</label>
                   <div class="suggested-box" id="suggestedContacts"></div>
                 </div>
               </div>
 
-              <div style="height:8px"></div>
-              <label>Invitee list</label>
-              <div class="list" id="inviteeList"></div>
+              <!-- Removed "Invitee list" block -->
             </div>
 
-            <!-- Staff Panel -->
-            <div id="panelStaff" class="subpanel" role="tabpanel" aria-labelledby="tabStaff">
-              <div class="field">
-                <label for="attendingStaff">(Internal Users)</label>
-                <div class="row">
-                  <select id="attendingStaff" style="flex:1"></select>
-                  <!-- Removed staff role select and Add remains -->
-                  <button class="btn" id="addStaffBtn" style="flex:0 0 auto">Add</button>
-                </div>
-              </div>
+            <!-- Grouped list (always visible): Staff then Invitees -->
+            <div style="margin-top:16px" id="groupedBlock">
+              <label>Staff</label>
+              <div class="list" id="groupStaff"></div>
 
-              <div class="list" id="staffList" style="margin-top:8px"></div>
+              <div style="height:8px"></div>
+              <label>Invitees</label>
+              <div class="list" id="groupInvitees"></div>
+            </div>
 
-              <!-- Availability lives here -->
-              <div class="avail reference" id="staffAvailability" style="display:none" role="note" aria-label="Reference availability">
-                <div class="avail-head">
-                  <div class="avail-title">
-                    <strong>Available times</strong>
-                    <span class="avail-muted" id="availabilityHint">Select an Attending Staff to view availability.</span>
-                  </div>
-                  <div class="avail-muted"></div>
-                </div>
-
-                <div class="ref-banner" aria-hidden="true" title="This panel does not change your meeting times">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                    <line x1="12" y1="8"  x2="12" y2="8"></line>
-                  </svg>
-                  Please check a teammate’s calendar before you choose your own start/end above.
-                </div>
-
-                <div class="cal-wrap">
-                  <!-- Calendar -->
-                  <div class="cal">
-                    <div class="cal-head">
-                      <div class="cal-nav">
-                        <button class="chip" id="calPrev">◀</button>
-                        <button class="chip" id="calToday">Today</button>
-                        <button class="chip" id="calNext">▶</button>
-                      </div>
-                      <div class="cal-month" id="calMonthLabel">Month YYYY</div>
-                    </div>
-                    <div class="cal-grid" id="calGrid"></div>
-                  </div>
-
-                  <!-- Times list -->
-                  <div class="time-panel">
-                    <h4 id="timePanelTitle">Times</h4>
-                    <div class="time-list" id="timeList"></div>
-                  </div>
-                </div>
-              </div> <!-- /avail -->
-            </div> <!-- /panelStaff -->
-          </div> <!-- /step2Panel -->
+            <!-- Availability (always visible) -->
+            <div id="availabilityMount"></div>
+          </div>
 
           <!-- =============== STEP 3 PANEL =============== -->
           <div id="step3Panel" class="hidden">
-            <!-- First row persists -->
             <div class="grid3">
               <div class="field">
                 <label for="meetingName_s3">Meeting name</label>
                 <input class="input" id="meetingName_s3" />
               </div>
-
               <div class="field">
                 <div class="inline-select">
                   <span class="inline-label">Meeting Status:</span>
@@ -439,7 +362,6 @@
                   <div class="inline-menu" id="statusMenu_s3"></div>
                 </div>
               </div>
-
               <div class="field">
                 <div class="inline-select">
                   <span class="inline-label">Meeting Stage:</span>
@@ -454,12 +376,10 @@
                 <label for="shortDesc">Short Description</label>
                 <textarea id="shortDesc" class="input" placeholder=""></textarea>
               </div>
-
               <div class="field" style="grid-column:1 / -1">
                 <label>Long Description</label>
                 <div id="longDesc" class="rte" contenteditable="true" spellcheck="true"></div>
               </div>
-
               <div class="field" style="grid-column:1 / -1">
                 <label>Notes</label>
                 <div id="notesDesc" class="rte" contenteditable="true" spellcheck="true"></div>
@@ -469,13 +389,11 @@
 
           <!-- =============== STEP 4 PANEL =============== -->
           <div id="step4Panel" class="hidden">
-            <!-- First row persists -->
             <div class="grid3">
               <div class="field">
                 <label for="meetingName_s4">Meeting name</label>
                 <input class="input" id="meetingName_s4" />
               </div>
-
               <div class="field">
                 <div class="inline-select">
                   <span class="inline-label">Meeting Status:</span>
@@ -483,7 +401,6 @@
                   <div class="inline-menu" id="statusMenu_s4"></div>
                 </div>
               </div>
-
               <div class="field">
                 <div class="inline-select">
                   <span class="inline-label">Meeting Stage:</span>
@@ -501,13 +418,11 @@
 
           <!-- =============== STEP 5 PANEL =============== -->
           <div id="step5Panel" class="hidden">
-            <!-- First row persists -->
             <div class="grid3">
               <div class="field">
                 <label for="meetingName_s5">Meeting name</label>
                 <input class="input" id="meetingName_s5" />
               </div>
-
               <div class="field">
                 <div class="inline-select">
                   <span class="inline-label">Meeting Status:</span>
@@ -515,7 +430,6 @@
                   <div class="inline-menu" id="statusMenu_s5"></div>
                 </div>
               </div>
-
               <div class="field">
                 <div class="inline-select">
                   <span class="inline-label">Meeting Stage:</span>
@@ -534,7 +448,6 @@
                 <button class="loc-tab" id="locVirtual" aria-selected="false">Virtual</button>
               </div>
 
-              <!-- In-Person -->
               <div id="inPersonPanel" class="loc-panel">
                 <div class="recommended">
                   <div class="muted" style="margin-bottom:6px">Recommended Locations</div>
@@ -550,7 +463,6 @@
                 </div>
               </div>
 
-              <!-- Virtual -->
               <div id="virtualPanel" class="loc-panel hidden">
                 <div class="field">
                   <label for="zoomUrl">Zoom Url</label>
@@ -615,15 +527,11 @@
 <script>
   // ===== Dummy Data =====
   const STATUS_OPTIONS = ['Draft','Active'];
-  const STAGE_OPTIONS  = ['Scheduled','Confirmed','Cancelled','Rescheduled','Updated'];
   const TZ_OPTIONS     = ['America/New_York','America/Chicago','America/Denver','America/Los_Angeles','UTC'];
 
   function mountInlineMenu(buttonEl, menuEl, options, onChoose){
     menuEl.innerHTML = options.map(opt=>`<div class="inline-option" data-val="${opt}">${opt}</div>`).join('');
-    buttonEl.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      menuEl.classList.toggle('open');
-    });
+    buttonEl.addEventListener('click', (e)=>{ e.stopPropagation(); menuEl.classList.toggle('open'); });
     menuEl.addEventListener('click', (e)=>{
       const val = e.target?.getAttribute?.('data-val');
       if(!val) return;
@@ -633,23 +541,28 @@
     document.addEventListener('click', ()=> menuEl.classList.remove('open'));
   }
 
+  // Organizer (scheduler)
+  const organizer = {
+    id:'u-org',
+    name:'Pete Romano',
+    title:'Organizer',
+    tz:'America/New_York',
+    email:'pete@segwik.com',
+    phone:'',
+    profileUrl:'#',
+    avatar:''
+  };
+
   const loggedInUser = { id: 'u-100', name: 'Alex Johnson', email: 'alex@segwik.example' };
 
+  // Internal users
   const internalUsers = [
-    { id:'u-101', name:'Priya Patel', title:'Account Executive', tz:'America/New_York',
-      email:'priya@segwik.example', phone:'(201) 555-0191', profileUrl:'#', avatar:'',
-      busy:[ { start: off(0,13,0), end: off(0,14,0) }, { start: off(1,10,30), end: off(1,11,30) }, { start: off(3,15,0), end: off(3,16,0) } ],
-      working:{ startHour:9, endHour:17 }
-    },
-    { id:'u-102', name:'Miguel Santos', title:'Solutions Consultant', tz:'America/New_York',
-      email:'miguel@segwik.example', phone:'(212) 555-0127', profileUrl:'#', avatar:'',
-      busy:[ { start: off(0,9,0), end: off(0,9,30) }, { start: off(2,13,30), end: off(2,15,0) } ],
-      working:{ startHour:8, endHour:16 }
-    },
-    { id:'u-103', name:'Jade Williams', title:'CSM', tz:'America/New_York',
-      email:'jade@segwik.example', phone:'(973) 555-0114', profileUrl:'#', avatar:'',
-      busy:[ { start: off(4,11,0), end: off(4,12,0) } ], working:{ startHour:10, endHour:18 } },
+    organizer,
+    { id:'u-101', name:'Priya Patel',   title:'Account Executive',     tz:'America/New_York', email:'priya@segwik.example',  phone:'(201) 555-0191', profileUrl:'#', avatar:'' },
+    { id:'u-102', name:'Miguel Santos', title:'Solutions Consultant',  tz:'America/New_York', email:'miguel@segwik.example', phone:'(212) 555-0127', profileUrl:'#', avatar:'' },
+    { id:'u-103', name:'Jade Williams', title:'CSM',                   tz:'America/New_York', email:'jade@segwik.example',   phone:'(973) 555-0114', profileUrl:'#', avatar:'' },
   ];
+
   const customers = [
     { id:'c-201', name:'Acme Corp – Dana Scott', email:'dana@acme.example', phone:'(973) 555-0100', profileUrl:'#', avatar:'' },
     { id:'c-202', name:'Rivertown Realty – Chris Lee', email:'chris@rivertown.example', phone:'(551) 555-0142', profileUrl:'#', avatar:'' },
@@ -674,12 +587,12 @@
   const state = {
     step: 2,
     status:'Active',
-    stage:'Scheduled',
+    stage:'Scheduling',
     timezone:'America/New_York',
-    staff:null,
+    staff: organizer.id,               // start on organizer
     weekOffset:0,
     invitees:[],
-    staffOnMeeting:[], // now just [{id}]
+    staffOnMeeting:[{ id: organizer.id }], // organizer auto-added
     meetingName:'',
     descriptions:{ short:'', long:'', notes:'' },
     agendas: [
@@ -698,11 +611,11 @@
       '1 Journal Square, Jersey City, NJ'
     ],
     zoomUrl: '',
-    selectedLocation: ''
+    selectedLocation: '',
+    refMonth: new Date(new Date().getFullYear(), 10, 1),  // default to November
+    selectedCalDate: new Date()
   };
   const defaultSlotMinutes = 30;
-  state.refMonth = new Date();
-  state.selectedCalDate = new Date();
 
   // ===== Utilities =====
   function pad(n){return String(n).padStart(2,'0')}
@@ -721,12 +634,25 @@
   }
   function startOfDay(d){ const x=new Date(d); x.setHours(0,0,0,0); return x; }
   function dateAtTime(baseDate, hhmm){ const [hh,mm] = hhmm.split(':').map(Number); const d = new Date(baseDate); d.setHours(hh, mm, 0, 0); return d; }
-  function initialsFromName(name){
-    const n = name.replace(/—|–/g,' ').split(' ').filter(Boolean);
-    const a = (n[0]?.[0]||'').toUpperCase();
-    const b = (n[1]?.[0]||'').toUpperCase();
-    return (a+b) || '•';
+
+  // Robust initials: take the person-side of the string (before any dash) and use first two words
+  function initialsFromName(raw){
+    const normalized = displayNameNameFirst(raw || '');
+    const personPart = normalized.split(/[—–-]/)[0].trim();
+    const parts = personPart.split(/\s+/).filter(Boolean);
+    const a = (parts[0]?.[0]||'').toUpperCase();
+    const b = (parts[1]?.[0]||'').toUpperCase();
+    return (a + b) || '•';
   }
+
+  function getProposedRange(){
+    const sd = startDate.value, st = startTime.value, ed = endDate.value, et = endTime.value;
+    if(!sd || !st || !ed || !et) return null;
+    const s = new Date(`${sd}T${st}`);
+    const e = new Date(`${ed}T${et}`);
+    return { start: s, end: e };
+  }
+  function rangesOverlap(a,b){ return a.start < b.end && b.start < a.end; }
 
   function renderSuggested(){
     const suggestedContacts = document.getElementById('suggestedContacts');
@@ -741,38 +667,61 @@
     `).join('');
   }
 
-  // Dummy availability
-  const DUMMY_BY_USER = {
-    "u-101": { anchor: new Date(2025,9,31), repeat: 4, patterns: [
-      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-    ]},
-    "u-102": { anchor: new Date(2025,9,31), repeat: 4, patterns: [
-      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-    ]},
-    "u-103": { anchor: new Date(2025,9,31), repeat: 4, patterns: [
-      [["09:00","09:30"],["10:30","11:00"],["13:00","13:30"]],
-      [["08:00","08:30"],["09:00","09:30"],["10:00","10:30"],["11:30","12:00"],["13:30","14:00"],["15:00","15:30"],["16:30","17:00"]],
-      [["09:15","09:45"],["10:45","11:15"],["12:00","12:30"],["14:15","14:45"],["16:00","16:30"]],
-    ]}
+  // ===== Availability model (November weekdays; no weekends) =====
+  const NOV_TEMPLATES = {
+    'u-org': { // Organizer Pete
+      1:[["09:00","09:30"],["11:00","11:30"],["14:00","14:30"]],
+      2:[["10:00","10:30"],["13:00","13:30"],["16:00","16:30"]],
+      3:[["09:30","10:00"],["12:30","13:00"],["15:30","16:00"]],
+      4:[["11:15","11:45"],["14:15","14:45"]],
+      5:[["09:00","09:30"],["10:45","11:15"],["13:30","14:00"]]
+    },
+    'u-101': { // Priya
+      1:[["10:00","10:30"],["13:00","13:30"],["16:00","16:30"]],
+      2:[["09:00","09:30"],["11:30","12:00"],["15:00","15:30"]],
+      3:[["08:30","09:00"],["12:00","12:30"],["14:30","15:00"]],
+      4:[["09:15","09:45"],["11:45","12:15"],["14:15","14:45"]],
+      5:[["10:30","11:00"],["13:30","14:00"]]
+    },
+    'u-102': { // Miguel
+      1:[["08:30","09:00"],["12:00","12:30"],["15:00","15:30"]],
+      2:[["09:30","10:00"],["13:30","14:00"],["16:30","17:00"]],
+      3:[["10:00","10:30"],["11:30","12:00"],["14:30","15:00"]],
+      4:[["08:00","08:30"],["10:00","10:30"],["13:00","13:30"]],
+      5:[["09:00","09:30"],["11:00","11:30"],["14:00","14:30"]]
+    },
+    'u-103': { // Jade
+      1:[["09:15","09:45"],["11:45","12:15"],["14:15","14:45"]],
+      2:[["10:15","10:45"],["12:45","13:15"]],
+      3:[["09:45","10:15"],["13:15","13:45"],["16:00","16:30"]],
+      4:[["10:30","11:00"],["14:30","15:00"]],
+      5:[["09:00","09:30"],["12:00","12:30"],["15:00","15:30"]]
+    }
   };
 
-  function getDummySlotsForUserOnDate(userId, date){
-    const dow = date.getDay();
-    if (dow === 0 || dow === 6) return [];
-    const cfg = DUMMY_BY_USER[userId];
-    if (!cfg) return [];
-    const oneDay = 86400000;
-    const diffDays = Math.floor((startOfDay(date) - startOfDay(cfg.anchor)) / oneDay);
-    if (diffDays % cfg.repeat !== 0) return [];
-    const patternIndex = Math.floor(diffDays / cfg.repeat) % cfg.patterns.length;
-    const chosen = cfg.patterns[patternIndex];
-    return chosen.map(([s,e]) => ({ start: dateAtTime(date,s), end: dateAtTime(date,e) }));
+  function isNovember(d){ return d.getMonth()===10; } // 0=Jan, 10=Nov
+  function getSlotsForUserOnDate(userId, date){
+    const dow = date.getDay(); if(dow===0 || dow===6) return [];
+    if(isNovember(date) && NOV_TEMPLATES[userId]?.[dow]){
+      return NOV_TEMPLATES[userId][dow].map(([s,e])=>({ start: dateAtTime(date,s), end: dateAtTime(date,e) }));
+    }
+    const fallbacks = {
+      'u-org' : [["09:00","09:30"],["14:00","14:30"]],
+      'u-101' : [["10:00","10:30"],["15:00","15:30"]],
+      'u-102' : [["08:30","09:00"],["13:30","14:00"]],
+      'u-103' : [["09:15","09:45"],["16:00","16:30"]]
+    };
+    const tpl = fallbacks[userId] || [["10:00","10:30"]];
+    return tpl.map(([s,e])=>({ start: dateAtTime(date,s), end: dateAtTime(date,e) }));
   }
-  function buildSlotsForDay(user, date, slotMinutes){ return []; }
+  function proposedConflictsForUser(userId){
+    const pr = getProposedRange(); if(!pr) return false;                 // no range -> no conflict
+    if(!sameDay(pr.start, pr.end)) return true;                          // must stay same day
+    const slots = getSlotsForUserOnDate(userId, pr.start);
+    if(!slots.length) return true;                                       // no availability that day -> conflict
+    const ok = slots.some(slot => pr.start>=slot.start && pr.end<=slot.end);
+    return !ok;                                                          // only conflict if not contained in any slot
+  }
 
   // ===== DOM =====
   const modal = document.getElementById('modal');
@@ -780,7 +729,6 @@
   document.getElementById('closeModal').addEventListener('click',()=>{modal.classList.remove('open')});
   modal.addEventListener('click',(e)=>{if(e.target===modal) modal.classList.remove('open')});
 
-  const createdByName = document.getElementById('createdByName');
   const startDate = document.getElementById('startDate');
   const startTime = document.getElementById('startTime');
   const endDate   = document.getElementById('endDate');
@@ -795,13 +743,14 @@
   // invitees
   const customerPicker = document.getElementById('customerPicker');
   const suggestedContacts = document.getElementById('suggestedContacts');
-  const inviteeList = document.getElementById('inviteeList');
 
   // staff
   const attendingStaff = document.getElementById('attendingStaff');
-  const staffList = document.getElementById('staffList');
-  const staffAvailability = document.getElementById('staffAvailability');
-  const availabilityHint = document.getElementById('availabilityHint');
+
+  // grouped always-visible block
+  const groupStaff = document.getElementById('groupStaff');
+  const groupInvitees = document.getElementById('groupInvitees');
+  const availabilityMount = document.getElementById('availabilityMount');
 
   // steps + controls
   const dlgTitle = document.getElementById('dlgTitle');
@@ -830,30 +779,59 @@
   const zoomUrl = document.getElementById('zoomUrl');
   const selectedLocationEl = document.getElementById('selectedLocation');
 
-  // Add New Location overlay elements
-  const addLocOverlay = document.getElementById('addLocOverlay');
-  const addLocClose = document.getElementById('addLocClose');
-  const addLocCancel = document.getElementById('addLocCancel');
-  const saveLocationBtn = document.getElementById('saveLocationBtn');
-  const addr1 = document.getElementById('addr1');
-  const addr2 = document.getElementById('addr2');
-  const city  = document.getElementById('city');
-  const stateInput = document.getElementById('state');
-  const zip   = document.getElementById('zip');
+  // Availability block (global mount)
+  const staffAvailability = document.createElement('div');
+  staffAvailability.className = 'avail reference';
+  staffAvailability.id = 'staffAvailability';
+  staffAvailability.setAttribute('role','note');
+  staffAvailability.setAttribute('aria-label','Reference availability');
+  staffAvailability.innerHTML = `
+    <div class="avail-head">
+      <div class="avail-title">
+        <strong>Available times</strong>
+        <span class="avail-muted" id="availabilityHint">Select a staff member to view availability.</span>
+      </div>
+      <div class="avail-muted" id="conflictNote"></div>
+    </div>
+    <div class="ref-banner" aria-hidden="true" title="This panel does not change your meeting times">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8"  x2="12" y2="8"></line>
+      </svg>
+      Please check a teammate’s calendar before you choose your own start/end above.
+    </div>
+    <div class="cal-wrap">
+      <div class="cal">
+        <div class="cal-head">
+          <div class="cal-nav">
+            <button class="chip" id="calPrev">◀</button>
+            <button class="chip" id="calToday">Today</button>
+            <button class="chip" id="calNext">▶</button>
+          </div>
+          <div class="cal-month" id="calMonthLabel">Month YYYY</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <div class="time-panel">
+        <h4 id="timePanelTitle">Times</h4>
+        <div class="time-list" id="timeList"></div>
+      </div>
+    </div>
+  `;
 
   function init(){
-    createdByName.textContent = loggedInUser.name;
+    // mount availability globally
+    availabilityMount.appendChild(staffAvailability);
 
     // Inline menus (Step 2)
     const statusBtn  = document.getElementById('statusValue');
     const statusMenu = document.getElementById('statusMenu');
-    statusBtn.textContent = state.status;
-    mountInlineMenu(statusBtn, statusMenu, STATUS_OPTIONS, (val)=>{ state.status = val; syncStatusAcross(); });
-
-    const stageBtn  = document.getElementById('stageValue');
-    const stageMenu = document.getElementById('stageMenu');
-    stageBtn.textContent = state.stage;
-    mountInlineMenu(stageBtn, stageMenu, STAGE_OPTIONS, (val)=>{ state.stage = val; syncStageAcross(); });
+    if (statusBtn && statusMenu) {
+      statusBtn.textContent = state.status;
+      mountInlineMenu(statusBtn, statusMenu, STATUS_OPTIONS, (val)=>{ state.status = val; syncStatusAcross(); });
+    }
 
     const tzBtn  = document.getElementById('tzValue');
     const tzMenu = document.getElementById('tzMenu');
@@ -861,7 +839,9 @@
     mountInlineMenu(tzBtn, tzMenu, TZ_OPTIONS, (val)=>{ state.timezone = val; tzBtn.textContent = val; });
 
     // pickers
-    attendingStaff.innerHTML = `<option value="">— Select staff —</option>` + internalUsers.map(u=>`<option value="${u.id}">${u.name} · ${u.title}</option>`).join('');
+    // NOTE: remove organizer from the staff search box
+    attendingStaff.innerHTML = `<option value="">-- Search Staff --</option>` +
+      internalUsers.filter(u=>u.id!==organizer.id).map(u=>`<option value="${u.id}">${u.name} · ${u.title}</option>`).join('');
     customerPicker.innerHTML = `<option value="">— Select contact —</option>` + customers.map(c=>`<option value="${c.id}">${displayNameNameFirst(c.name)}</option>`).join('');
 
     renderSuggested();
@@ -877,19 +857,23 @@
     endDate.value   = toISO(later).slice(0,10);
     endTime.value   = toISO(later).slice(11,16);
 
-    tabInvitees.addEventListener('click', ()=> switchSub('invitees'));
-    tabStaff.addEventListener('click', ()=> switchSub('staff'));
+    // start the calendar on the proposed date
+    state.selectedCalDate = new Date(startDate.value + 'T00:00');
 
-    // Invitees: auto-add on select (removed "Add" button)
+    tabStaff.addEventListener('click',   ()=> switchSub('staff'));
+    tabInvitees.addEventListener('click',()=> switchSub('invitees'));
+
+    // Invitees: auto-add on select
     customerPicker.addEventListener('change', ()=>{
       const id = customerPicker.value; 
       if(!id) return;
       const c = [...customers, ...suggested].find(x=>x.id===id);
       addInvitee(c);
       customerPicker.value='';
+      renderGroupedParticipants();
     });
 
-    // Suggested add (delegated) — removes from suggestions immediately
+    // Suggested add (delegated)
     suggestedContacts.addEventListener('click', (e)=>{
       const id = e.target?.getAttribute?.('data-add-contact'); 
       if(!id) return;
@@ -898,21 +882,10 @@
       addInvitee(c);
       suggested = suggested.filter(x=>x.id !== id);
       renderSuggested();
+      renderGroupedParticipants();
     });
 
     attendingStaff.addEventListener('change', onStaffChange);
-
-    document.getElementById('addStaffBtn').addEventListener('click', ()=>{
-      const id = attendingStaff.value;
-      if(!id) return;
-      if(!state.staffOnMeeting.some(s=>s.id===id)){
-        state.staffOnMeeting.push({ id });
-        renderStaffList();
-      }
-      attendingStaff.value = '';
-      staffAvailability.style.display = 'block';
-      renderAvailability();
-    });
 
     document.getElementById('saveDraftBtn').addEventListener('click', ()=> alert('Saved draft. (mock)'));
 
@@ -956,15 +929,12 @@
       setSelectedLocation(chosen);
     });
 
-    addNewLink.addEventListener('click', (e)=>{
-      e.preventDefault();
-      openAddLocation();
-    });
+    addNewLink.addEventListener('click', (e)=>{ e.preventDefault(); openAddLocation(); });
 
-    addLocClose.addEventListener('click', closeAddLocation);
-    addLocCancel.addEventListener('click', closeAddLocation);
-    addLocOverlay.addEventListener('click', (e)=>{ if(e.target===addLocOverlay) closeAddLocation(); });
-    saveLocationBtn.addEventListener('click', ()=>{
+    document.getElementById('addLocClose').addEventListener('click', closeAddLocation);
+    document.getElementById('addLocCancel').addEventListener('click', closeAddLocation);
+    document.getElementById('addLocOverlay').addEventListener('click', (e)=>{ if(e.target===addLocOverlay) closeAddLocation(); });
+    document.getElementById('saveLocationBtn').addEventListener('click', ()=>{
       const composed = composeAddress();
       if(!composed){ alert('Please enter at least an Address and City/State.'); return; }
       setSelectedLocation(composed);
@@ -974,9 +944,16 @@
       addr1.value = addr2.value = city.value = stateInput.value = zip.value = '';
     });
 
+    // react to proposed time changes
+    [startDate,startTime,endDate,endTime].forEach(el=> el.addEventListener('change', onProposedTimeChange));
+
     updateStepUI();
 
     document.getElementById('meetingName').addEventListener('input', e => { state.meetingName = e.target.value; syncNameAcross(); });
+
+    // initial renders
+    renderGroupedParticipants();
+    renderAvailability(true); // initial render
   }
 
   function composeAddress(){
@@ -1003,98 +980,142 @@
   function setSelectedLocation(addr){ state.selectedLocation = addr; renderSelectedLocation(); }
 
   function syncNameAcross(){
-    document.getElementById('meetingName_s3').value = state.meetingName || '';
-    document.getElementById('meetingName_s4').value = state.meetingName || '';
-    document.getElementById('meetingName_s5').value = state.meetingName || '';
+    const s3 = document.getElementById('meetingName_s3');
+    const s4 = document.getElementById('meetingName_s4');
+    const s5 = document.getElementById('meetingName_s5');
+    if(s3) s3.value = state.meetingName || '';
+    if(s4) s4.value = state.meetingName || '';
+    if(s5) s5.value = state.meetingName || '';
   }
   function syncStatusAcross(){
-    document.getElementById('statusValue').textContent = state.status;
-    document.getElementById('statusValue_s3').textContent = state.status;
-    document.getElementById('statusValue_s4').textContent = state.status;
-    document.getElementById('statusValue_s5').textContent = state.status;
+    ['statusValue','statusValue_s3','statusValue_s4','statusValue_s5']
+      .forEach(id => { const el = document.getElementById(id); if (el) el.textContent = state.status; });
   }
-  function syncStageAcross(){
-    document.getElementById('stageValue').textContent = state.stage;
-    document.getElementById('stageValue_s3').textContent = state.stage;
-    document.getElementById('stageValue_s4').textContent = state.stage;
-    document.getElementById('stageValue_s5').textContent = state.stage;
-  }
+  function syncStageAcross(){ /* fixed "Scheduling" */ }
 
   function setupMirrors(){
-    // Step 3 menus
-    mountInlineMenu(document.getElementById('statusValue_s3'), document.getElementById('statusMenu_s3'), STATUS_OPTIONS, (v)=>{ state.status=v; syncStatusAcross(); });
-    mountInlineMenu(document.getElementById('stageValue_s3'),  document.getElementById('stageMenu_s3'),  STAGE_OPTIONS,  (v)=>{ state.stage=v;  syncStageAcross(); });
-    // Step 4 menus
-    mountInlineMenu(document.getElementById('statusValue_s4'), document.getElementById('statusMenu_s4'), STATUS_OPTIONS, (v)=>{ state.status=v; syncStatusAcross(); });
-    mountInlineMenu(document.getElementById('stageValue_s4'),  document.getElementById('stageMenu_s4'),  STAGE_OPTIONS,  (v)=>{ state.stage=v;  syncStageAcross(); });
-    // Step 5 menus
-    mountInlineMenu(document.getElementById('statusValue_s5'), document.getElementById('statusMenu_s5'), STATUS_OPTIONS, (v)=>{ state.status=v; syncStatusAcross(); });
-    mountInlineMenu(document.getElementById('stageValue_s5'),  document.getElementById('stageMenu_s5'),  STAGE_OPTIONS,  (v)=>{ state.stage=v;  syncStageAcross(); });
-
-    document.getElementById('meetingName_s3').addEventListener('input', e => { state.meetingName = e.target.value; document.getElementById('meetingName').value = e.target.value; syncNameAcross(); });
-    document.getElementById('meetingName_s4').addEventListener('input', e => { state.meetingName = e.target.value; document.getElementById('meetingName').value = e.target.value; syncNameAcross(); });
-    document.getElementById('meetingName_s5').addEventListener('input', e => { state.meetingName = e.target.value; document.getElementById('meetingName').value = e.target.value; syncNameAcross(); });
+    [['statusValue_s3','statusMenu_s3'],['statusValue_s4','statusMenu_s4'],['statusValue_s5','statusMenu_s5']]
+      .forEach(([btnId, menuId])=>{
+        const btn = document.getElementById(btnId);
+        const menu = document.getElementById(menuId);
+        if (btn && menu) {
+          mountInlineMenu(btn, menu, STATUS_OPTIONS, (v)=>{ state.status=v; syncStatusAcross(); });
+        }
+      });
+    ['meetingName_s3','meetingName_s4','meetingName_s5'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('input', e => {
+        state.meetingName = e.target.value;
+        document.getElementById('meetingName').value = e.target.value;
+        syncNameAcross();
+      });
+    });
   }
 
   function switchSub(which){
-    const inv = which==='invitees';
-    document.getElementById('tabInvitees').setAttribute('aria-selected',inv);
-    document.getElementById('tabStaff').setAttribute('aria-selected',!inv);
-    document.getElementById('panelInvitees').classList.toggle('active',inv);
-    document.getElementById('panelStaff').classList.toggle('active',!inv);
+    const isStaff = which === 'staff';
+    tabStaff.setAttribute('aria-selected', isStaff);
+    tabInvitees.setAttribute('aria-selected', !isStaff);
+    panelStaff.classList.toggle('active', isStaff);
+    panelInvitees.classList.toggle('active', !isStaff);
+    // grouped list + availability remain visible
   }
 
-  // Staff picker -> show availability
+  // Staff picker -> auto-add, show availability, conflict alert
   function onStaffChange(){
     const id = attendingStaff.value || null;
+    if (!id) return;
+
     state.staff = id;
-    staffAvailability.style.display = id ? 'block' : 'none';
+
+    if (!state.staffOnMeeting.some(s => s.id === id)) {
+      state.staffOnMeeting.push({ id });
+      renderGroupedParticipants();
+    }
+
+    attendingStaff.value = '';
+
     renderAvailability();
+    if (proposedConflictsForUser(id)) {
+      alert(`Heads up: The proposed time conflicts with ${getUserById(id).name}'s calendar.`);
+    }
   }
 
-  // Availability
-  function renderAvailability(){
+  function onProposedTimeChange(){
+    if(startDate.value){
+      state.selectedCalDate = new Date(startDate.value + 'T00:00');
+    }
+    renderAvailability();
+    renderGroupedParticipants(); // updates conflict badges for organizer/staff
+  }
+
+  // Availability (calendar + list)
+  function renderAvailability(initial=false){
     const grid = document.getElementById('calGrid');
     const monthLbl = document.getElementById('calMonthLabel');
     const timeList = document.getElementById('timeList');
     const timeTitle = document.getElementById('timePanelTitle');
+    const availabilityHint = document.getElementById('availabilityHint');
+    const conflictNote = document.getElementById('conflictNote');
 
     grid.innerHTML = '';
     timeList.innerHTML = '';
 
-    if(!state.staff){
-      availabilityHint.textContent = 'Select an Attending Staff to view availability.';
+    let user = state.staff ? getUserById(state.staff) : null;
+    if(!user){
+      availabilityHint.textContent = 'Select a staff member to view availability.';
       renderCalSkeleton(grid);
       monthLbl.textContent = formatMonthLabel(state.refMonth);
       timeTitle.textContent = 'Times';
       timeList.innerHTML = `<div class="time-empty">No staff selected.</div>`;
+      conflictNote.textContent = '';
       wireCalNav();
       return;
     }
 
-    const user = internalUsers.find(u=>u.id===state.staff);
     availabilityHint.textContent = `Showing ${user.name}'s availability`;
+    const monthRef = isNovember(state.selectedCalDate) ? new Date(state.selectedCalDate) : new Date(state.refMonth);
+    state.refMonth = monthRef;
 
-    renderCalendar(grid, state.refMonth, state.selectedCalDate);
-    monthLbl.textContent = formatMonthLabel(state.refMonth);
+    renderCalendar(grid, monthRef, state.selectedCalDate);
+    monthLbl.textContent = formatMonthLabel(monthRef);
     wireCalNav();
 
     timeTitle.textContent = state.selectedCalDate.toLocaleDateString(undefined,{ weekday:'long', month:'long', day:'numeric' });
 
-    let slots = getDummySlotsForUserOnDate(user.id, state.selectedCalDate);
+    const slots = getSlotsForUserOnDate(user.id, state.selectedCalDate);
     const isWeekend = [0,6].includes(state.selectedCalDate.getDay());
-    if (!slots.length && !isWeekend) {
-      slots = buildSlotsForDay(user, state.selectedCalDate, defaultSlotMinutes);
+
+    const pr = getProposedRange();
+    if (pr && sameDay(pr.start, state.selectedCalDate)) {
+      const isConflict = proposedConflictsForUser(user.id);
+      conflictNote.innerHTML = isConflict
+        ? `<span class="conflict-badge">CONFLICT at ${fmtTime(pr.start)} – ${fmtTime(pr.end)}</span>`
+        : `<span class="role-badge">Proposed: ${fmtTime(pr.start)} – ${fmtTime(pr.end)}</span>`;
+    } else {
+      conflictNote.textContent = '';
     }
 
     if(!slots.length){
-      timeList.innerHTML = `<div class="time-empty">${isWeekend ? 'No available times for this date.' : 'No available times for this date.'}</div>`;
+      timeList.innerHTML = `<div class="time-empty">${isWeekend ? 'No availability on weekends.' : 'No available times for this date.'}</div>`;
     } else {
       const frag = document.createDocumentFragment();
       slots.forEach(s=>{
-        const row = document.createElement('div');
+        const row = document.createElement('button');
+        row.type = 'button';
         row.className = 'time-row';
         row.textContent = `${fmtTime(s.start)} – ${fmtTime(s.end)}`;
+        const pr = getProposedRange();
+        if (pr && sameDay(pr.start, s.start) && pr.start.getTime()===s.start.getTime() && pr.end.getTime()===s.end.getTime()){
+          row.classList.add('active');
+        }
+        row.addEventListener('click', ()=>{
+          startDate.value = toISO(s.start).slice(0,10);
+          startTime.value = toISO(s.start).slice(11,16);
+          endDate.value   = toISO(s.end).slice(0,10);
+          endTime.value   = toISO(s.end).slice(11,16);
+          onProposedTimeChange();
+        });
         frag.appendChild(row);
       });
       timeList.appendChild(frag);
@@ -1103,7 +1124,12 @@
     function wireCalNav(){
       document.getElementById('calPrev').onclick = ()=>{ shiftMonth(-1); };
       document.getElementById('calNext').onclick = ()=>{ shiftMonth(1); };
-      document.getElementById('calToday').onclick = ()=>{ state.refMonth = new Date(); state.selectedCalDate = new Date(); renderAvailability(); };
+      document.getElementById('calToday').onclick = ()=>{
+        const t = new Date();
+        state.refMonth = new Date(t.getFullYear(), t.getMonth(), 1);
+        state.selectedCalDate = startOfDay(t);
+        renderAvailability();
+      };
     }
     function shiftMonth(delta){
       const d = new Date(state.refMonth);
@@ -1156,87 +1182,97 @@
     if(person.avatar){
       return `<span class="avatar"><img src="${person.avatar}" alt=""></span>`;
     }
-    return `<span class="avatar" aria-hidden="true">${initialsFromName(displayNameNameFirst(person.name||''))}</span>`;
+    return `<span class="avatar" aria-hidden="true">${initialsFromName(person.name||'')}</span>`;
   }
 
-  // Invitees & Staff lists
+  function getUserById(id){ return internalUsers.find(u=>u.id===id); }
+
+  // Invitees & Staff management (rendered only in grouped section)
   function addInvitee(contact){
     if(!contact) return;
     if(state.invitees.some(i=>i.id===contact.id)) return;
     state.invitees.push({ id: contact.id, name: contact.name, displayName: displayNameNameFirst(contact.name), email: contact.email, phone: contact.phone || '', profileUrl: contact.profileUrl || '#', avatar: contact.avatar || '' });
-    renderInviteeList();
   }
   function removeInvitee(id){
     state.invitees = state.invitees.filter(i=> i.id!==id);
-    renderInviteeList();
-  }
-  function renderInviteeList(){
-    inviteeList.innerHTML='';
-    if(!state.invitees.length){
-      const empty=document.createElement('div');
-      empty.className='hint';
-      empty.textContent='No invitees added yet.';
-      inviteeList.appendChild(empty);
-      return;
-    }
-    state.invitees.forEach(i=>{
-      const row=document.createElement('div'); 
-      row.className='person-card';
-      row.innerHTML = `
-        <div class="person-left">
-          ${avatarHTML(i)}
-          <div class="meta">
-            <div class="name-row">
-              <strong>${i.displayName || displayNameNameFirst(i.name)}</strong>
-              <button class="remove-x" title="Remove" data-remove-invitee="${i.id}">×</button>
-            </div>
-            <div class="subline">${i.email}</div>
-            ${i.phone ? `<div class="subline">${i.phone}</div>` : ``}
-          </div>
-        </div>
-        <div class="person-right">
-          <a class="view-link" href="${i.profileUrl || '#'}" target="_blank" rel="noopener">View Profile</a>
-        </div>
-      `;
-      inviteeList.appendChild(row);
-    });
-    inviteeList.querySelectorAll('[data-remove-invitee]').forEach(btn=> btn.addEventListener('click',()=> removeInvitee(btn.getAttribute('data-remove-invitee'))));
+    renderGroupedParticipants();
   }
 
-  function renderStaffList(){
-    staffList.innerHTML='';
-    if(!state.staffOnMeeting.length){
-      const empty=document.createElement('div'); empty.className='hint'; empty.textContent='No staff selected.'; staffList.appendChild(empty); return;
-    }
-    state.staffOnMeeting.forEach(s=>{
-      const u = internalUsers.find(x=>x.id===s.id) || { name:'Unknown', title:'', email:'', phone:'', profileUrl:'#', avatar:'' };
-      const row = document.createElement('div'); 
-      row.className='person-card';
-      row.innerHTML = `
-        <div class="person-left">
-          ${avatarHTML(u)}
-          <div class="meta">
-            <div class="name-row">
-              <strong>${u.name}</strong>
-              <button class="remove-x" title="Remove" data-remove-staff="${s.id}">×</button>
-            </div>
-            <div class="subline">${u.title || ''}</div>
-            <div class="subline">${u.email || ''}</div>
-            ${u.phone ? `<div class="subline">${u.phone}</div>` : ``}
-          </div>
-        </div>
-        <div class="person-right">
-          <a class="view-link" href="${u.profileUrl || '#'}" target="_blank" rel="noopener">View Profile</a>
-        </div>
-      `;
-      staffList.appendChild(row);
+  // Grouped (always visible) render: Staff then Invitees
+  function renderGroupedParticipants(){
+    groupStaff.innerHTML = '';
+    groupInvitees.innerHTML = '';
+
+    // Organizer first in Staff group
+    const orgConflict = proposedConflictsForUser(organizer.id);
+    groupStaff.appendChild(buildCard(organizer, {badge:'Organizer', showBadge:true, clickable:true, showConflict:orgConflict}));
+
+    // Rest of staff (no bubbles)
+    state.staffOnMeeting
+      .filter(s => s.id !== organizer.id)
+      .map(s => getUserById(s.id))
+      .forEach(u => {
+        const conflict = proposedConflictsForUser(u.id);
+        groupStaff.appendChild(buildCard(u, {badge:'', showBadge:false, clickable:true, showConflict:conflict, removable:true, removeHandler:(id)=>{
+          state.staffOnMeeting = state.staffOnMeeting.filter(x=>x.id!==id);
+          renderGroupedParticipants(); renderAvailability();
+        }}));
+      });
+
+    // Invitees (no bubbles)
+    state.invitees.forEach(inv => {
+      const person = { ...inv, name: inv.displayName || inv.name };
+      groupInvitees.appendChild(buildCard(person, {badge:'', showBadge:false, clickable:false, removable:true, removeHandler:()=> removeInvitee(inv.id)}));
     });
-    staffList.querySelectorAll('[data-remove-staff]').forEach(btn=> btn.addEventListener('click',()=>{
-      const id=btn.getAttribute('data-remove-staff');
-      state.staffOnMeeting = state.staffOnMeeting.filter(x=>x.id!==id);
-      if(state.staff===id){ state.staff=null; attendingStaff.value=''; staffAvailability.style.display='none'; }
-      renderStaffList(); renderAvailability();
-    }));
+  }
+
+  function buildCard(person, opts){
+    const {badge, showBadge, clickable, showConflict, removable, removeHandler} = Object.assign({badge:'', showBadge:false, clickable:false, showConflict:false, removable:false, removeHandler:null}, opts||{});
+    const el = document.createElement('div');
+    el.className = 'person-card';
+    if(clickable){ el.dataset.clickable = 'true'; }
+
+    // Build conflict label with explicit time if applicable
+    let conflictHTML = '';
+    if (showConflict) {
+      const pr = getProposedRange();
+      if (pr) {
+        conflictHTML = `<span class="conflict-badge">CONFLICT at ${fmtTime(pr.start)} – ${fmtTime(pr.end)}</span>`;
+      }
+    }
+
+    el.innerHTML = `
+      <div class="person-left">
+        ${avatarHTML(person)}
+        <div class="meta">
+          <div class="name-row">
+            <strong>${person.name || person.displayName}</strong>
+            ${showBadge ? `<span class="role-badge">${badge}</span>` : ``}
+            ${conflictHTML}
+            ${removable ? `<button class="remove-x" title="Remove" data-remove="1">×</button>` : ``}
+          </div>
+          ${person.title ? `<div class="subline">${person.title}</div>` : ``}
+          ${person.email ? `<div class="subline">${person.email}</div>` : ``}
+          ${person.phone ? `<div class="subline">${person.phone}</div>` : ``}
+        </div>
+      </div>
+      <div class="person-right">
+        ${person.profileUrl ? `<a class="view-link" href="${person.profileUrl}" target="_blank" rel="noopener">View Profile</a>` : ``}
+      </div>
+    `;
+    if(clickable){
+      el.addEventListener('click', ()=>{
+        // clicking a staff in the rendered list should show their respective calendars
+        if(person.id && getUserById(person.id)){ state.staff = person.id; renderAvailability(); }
+      });
+    }
+    if(removable && removeHandler){
+      el.querySelector('[data-remove]').addEventListener('click', (e)=>{
+        e.stopPropagation();
+        removeHandler(person.id);
+      });
+    }
+    return el;
   }
 
   // Step Nav
@@ -1244,7 +1280,6 @@
     step2Error.style.display = 'none';
 
     if(state.step===2){
-      // Require at least one staff (text still mentions invitee+staff; keeping logic as requested change list didn't include)
       if(state.staffOnMeeting.length === 0){
         step2Error.style.display = 'block';
         return;
@@ -1339,24 +1374,11 @@
         renderAgenda();
       });
 
-      item.addEventListener('dragstart', (e)=>{
-        e.dataTransfer.setData('text/plain', a.id);
-        item.style.opacity = .5;
-      });
+      item.addEventListener('dragstart', (e)=>{ e.dataTransfer.setData('text/plain', a.id); item.style.opacity = .5; });
       item.addEventListener('dragend', ()=>{ item.style.opacity = 1; });
       item.addEventListener('dragover', (e)=>{ e.preventDefault(); item.style.borderColor = '#cfe0ff'; });
       item.addEventListener('dragleave', ()=>{ item.style.borderColor = 'var(--line)'; });
-      item.addEventListener('drop', (e)=>{
-        e.preventDefault();
-        item.style.borderColor = 'var(--line)';
-        const draggedId = e.dataTransfer.getData('text/plain');
-        if(draggedId===a.id) return;
-        const from = state.agendas.findIndex(x=>x.id===draggedId);
-        const to   = state.agendas.findIndex(x=>x.id===a.id);
-        const [moved] = state.agendas.splice(from,1);
-        state.agendas.splice(to,0,moved);
-        renderAgenda();
-      });
+      item.addEventListener('drop', (e)=>{ e.preventDefault(); item.style.borderColor = 'var(--line)'; const draggedId = e.dataTransfer.getData('text/plain'); if(draggedId===a.id) return; const from = state.agendas.findIndex(x=>x.id===draggedId); const to = state.agendas.findIndex(x=>x.id===a.id); const [moved] = state.agendas.splice(from,1); state.agendas.splice(to,0,moved); renderAgenda(); });
 
       agendaList.appendChild(item);
     });
@@ -1381,30 +1403,18 @@
       </div>
     `).join('');
   }
-
   recList.addEventListener('click', (e)=>{
     const chosen = e.target?.getAttribute?.('data-choose-loc');
     if(!chosen) return;
     setSelectedLocation(chosen);
   });
-
   zoomUrl.addEventListener('input', e=> state.zoomUrl = e.target.value );
 
   function initPanelsSync(){ syncNameAcross(); syncStatusAcross(); syncStageAcross(); }
 
-  createdByName.textContent = loggedInUser.name;
+  // Boot
   init();
   initPanelsSync();
-
-  function renderCalSkeleton(container){
-    container.innerHTML = '';
-    for(let i=0;i<7;i++){
-      const h = document.createElement('div');
-      h.className = 'cal-dow';
-      h.textContent = dayNameShort(i);
-      container.appendChild(h);
-    }
-  }
 </script>
 </body>
 </html>
